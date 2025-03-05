@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CVA Revalidatie Keuken</title>
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <!-- Event set component -->
+    <script src="https://unpkg.com/aframe-event-set-component@5.0.0/dist/aframe-event-set-component.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <!-- Asset Management -->
+      <a-assets>
+        <a-asset-item
+          id="kitchen"
+          src="assets/cartoon_kitchen_interior/scene.gltf"
+        >
+        </a-asset-item>
+        <a-asset-item id="egg" src="assets/egg/scene.gltf"></a-asset-item>
+        <a-asset-item id="bowl" src="assets/bowl/scene.gltf"></a-asset-item>
+      </a-assets>
+      <!-- END | Asset Management -->
+      <!-- camera -->
+      <a-entity
+        id="camera"
+        camera=""
+        position="-0.0001 2.12179 1.50326"
+        wasd-controls=""
+        rotation="-34.26344910661836 0 0"
+        look-controls=""
+        aframe-injected=""
+        data-aframe-inspector-original-camera=""
+        id="Table camera"
+        fuse="true"
+      >
+        <a-cursor
+          id="sight_cursor"
+          raycaster="showLine: true"
+          position="0 0 -0.2"
+          visible="true"
+        ></a-cursor
+      ></a-entity>
+
+      <!-- Kitchen -->
+      <a-entity
+        id="kitchen_model"
+        gltf-model="#kitchen"
+        scale="3 3 3"
+        position="0.289 1.462 0.797"
+        rotation="0 180 0"
+      >
+      </a-entity>
+
+      <!-- Eggs -->
+      <a-entity
+        id="egg_group"
+        position="-0.122 1.863 1.143"
+        event-set__egg_focus="_event: mouseenter; _target: #green_correct; visible: true"
+        event-set__egg_unfocus="_event: mouseleave; _target: #green_correct; visible: false"
+      >
+        <a-entity
+          id="egg_1"
+          gltf-model="assets/egg/scene.gltf"
+          visible=""
+          scale="0.03 0.03 0.03"
+          position="0 0.019 0.01456"
+        >
+        </a-entity>
+        <a-entity
+          id="egg_2"
+          gltf-model="assets/egg/scene.gltf"
+          visible=""
+          scale="0.03 0.03 0.03"
+          position="-0.042 0.019 0.034"
+          shadow="receive: true"
+        >
+        </a-entity>
+        <a-entity
+          id="egg_3"
+          gltf-model="assets/egg/scene.gltf"
+          visible=""
+          scale="0.03 0.03 0.03"
+          position="0.000 0.017 0.060"
+        >
+        </a-entity>
+        <!-- Egg | Correct lighting -->
+        <a-entity
+          id="green_correct"
+          light="angle: 60.68; color: #23d72f; decay: 1.23; distance: 0.17; intensity: 5; type: point; shadowBias: -0.26; shadowCameraBottom: -5.01"
+          visible="false"
+        ></a-entity>
+
+        <!-- Bowl -->
+      </a-entity>
+      <a-entity id="bowl_group" position="0.026 1.858 1.162">
+        <a-entity
+          id="bowl"
+          gltf-model="assets/bowl/scene.gltf"
+          visible=""
+          scale="0.001 0.001 0.001"
+          position="0.000 -0.038 0.134"
+        ></a-entity>
+      </a-entity>
+      <!-- Test cube -->
+      <a-box
+        id="test_cube"
+        material=""
+        geometry=""
+        scale="0.51 0.5 0.51"
+        position="0.932 1.74946 0.38962"
+        event-set__enter="_event: mouseenter; material.color: #000000"
+        event-set__leave="_event: mouseleave; material.color: #FFFFFF"
+      >
+      </a-box>
+
+      <!-- Main light -->
+
+      <!-- Default ambient light -->
+      <a-entity id="ambient_light" light="type: ambient; color: #BBB">
+      </a-entity>
+      <!-- Directional light -->
+      <a-light
+        id="directional_light"
+        type="directional"
+        color="#FFFFFF"
+        intensity="0.6"
+        castshadow="true"
+        position="0 2.736 1.50171"
+        light=""
+      >
+      </a-light>
+
+      <!-- sky backdrop -->
+      <a-sky src="assets/sky.jpg"></a-sky>
+    </a-scene>
+  </body>
+</html>
