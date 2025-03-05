@@ -20,25 +20,24 @@
       </a-assets>
       <!-- END | Asset Management -->
       <!-- camera -->
-      <a-entity
-        id="camera"
-        camera=""
-        position="-0.0001 2.12179 1.50326"
-        wasd-controls=""
-        rotation="-34.26344910661836 0 0"
-        look-controls=""
-        aframe-injected=""
-        data-aframe-inspector-original-camera=""
-        id="Table camera"
-        fuse="true"
-      >
-        <a-cursor
-          id="sight_cursor"
-          raycaster="showLine: true"
-          position="0 0 -0.2"
-          visible="true"
-        ></a-cursor
-      ></a-entity>
+      <a-entity id="camera_rig" rig position="0.02027 0.575 1.45432">
+        <a-camera
+          look-controls=""
+          id="main_camera"
+          active="true"
+          rotation="0 0 0"
+          aframe-injected=""
+          spectator="false"
+          data-aframe-inspector-original-camera=""
+        >
+          <a-cursor
+            id="sight_cursor"
+            raycaster="showLine: true"
+            position="0 0 -0.2"
+            visible="true"
+          ></a-cursor
+        ></a-camera>
+      </a-entity>
 
       <!-- Kitchen -->
       <a-entity
@@ -91,13 +90,13 @@
 
         <!-- Bowl -->
       </a-entity>
-      <a-entity id="bowl_group" position="0.026 1.858 1.162">
+      <a-entity id="bowl_group" position="0.026 1.858 1.182">
         <a-entity
           id="bowl"
           gltf-model="assets/bowl/scene.gltf"
           visible=""
           scale="0.001 0.001 0.001"
-          position="0.000 -0.038 0.134"
+          position="0 -0.01708 0.09456"
         ></a-entity>
       </a-entity>
       <!-- Test cube -->
