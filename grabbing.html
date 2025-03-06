@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script>
+      delete AFRAME.components["grabbable"];
+    </script>
+    <!-- aframe extras -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.x/dist/aframe-extras.min.js"></script>
+    <!-- super hands -->
+    <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
+    <!-- physics -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@4.2.2/dist/aframe-physics-system.min.js"></script>
+    <!-- Event set component -->
+    <script src="https://unpkg.com/aframe-event-set-component@5.0.0/dist/aframe-event-set-component.min.js"></script>
+    <script>
+      AFRAME.registerComponent('hover-listener', {
+        init: function () {
+          const el = this.el;
+
+          el.addEventListener('hover-start', function () {
+            el.removeAttribute('static-body');
+          });
+
+          el.addEventListener('hover-end', function () {
+            el.setAttribute('dynamic-body')
+          })
+        }
+      })
+    </script>
+    <script>
+      // Component to listen for all events and log them to the console
+      AFRAME.registerComponent('log-all-events', {
+        init: function () {
+          const el = this.el;
+          const eventList = ['mouseenter', 'mouseleave', 'mousedown', 'mouseup', 'click', 'dragstart', 'dragend', 'hover-start', 'hover-end', 'grab-start', 'grab-end', 'stretch-start', 'stretch-end', 'dragover-start', 'dragover-end', 'drag-drop'];
+
+          // Loop through all event types and add listeners
+          eventList.forEach(eventType => {
+            el.addEventListener(eventType, (event) => {
+              console.log(`Event "${eventType}" fired on`, el);
+            });
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <a-scene school-playground physics="debug:false">
+      <a-entity
+        sphere-collider="objects: a-box, .grabbable;"
+        super-hands
+        id="rightHand"
+        hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"
+      ></a-entity>
+      <a-box
+        class="grabbable"
+        hover-listener
+        dynamic-body=""
+        grabbable="maxGrabbers: NaN"
+        position="0 1.52628 -0.53676"
+        scale="0.1 0.1 0.1"
+        color="yellow"
+      ></a-box>
+      <a-sphere
+        log-all-events
+        class="grabbable"
+        hover-listener
+        grabbable="maxGrabbers: NaN"
+        position="0 1.52628 -0.53676"
+        scale="0.1 0.1 0.1"
+        color="yellow"
+      ></a-sphere>
+      <a-plane
+        id="floor"
+        static-body
+        position="0 0.7 0"
+        scale="4 4 4"
+        height="4"
+        width="4"
+        rotation="-90 0 0"
+        color="#CCC"
+      ></a-plane>
+    </a-scene>
+  </body>
+</html>

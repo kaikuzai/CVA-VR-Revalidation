@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script>
+      delete AFRAME.components["grabbable"];
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-entity
+        super-hands
+        id="rightHand"
+        hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"
+      ></a-entity>
+      <a-box
+        grabbable
+        position="0 1.52628 -0.53676"
+        scale="0.1 0.1 0.1"
+        color="yellow"
+      ></a-box>
+      <a-plane
+        id="floor"
+        static-body
+        position="0 1 0"
+        scale="15 15 15"
+        rotation="90 0 0"
+        src="assets/soil.jpg"
+      ></a-plane>
+      <a-sky src="assets/sky.jpg"></a-sky>
+      ></a-scene
+    >
+  </body>
+</html>
