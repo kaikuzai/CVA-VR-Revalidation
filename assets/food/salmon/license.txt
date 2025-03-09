@@ -1,0 +1,11 @@
+Model Information:
+* title:	Salmon steak lowpoly
+* source:	https://sketchfab.com/3d-models/salmon-steak-lowpoly-ef77b82f888b4a60ac04d98d6b4e7b41
+* author:	che_be (https://sketchfab.com/che_be)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Salmon steak lowpoly" (https://sketchfab.com/3d-models/salmon-steak-lowpoly-ef77b82f888b4a60ac04d98d6b4e7b41) by che_be (https://sketchfab.com/che_be) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

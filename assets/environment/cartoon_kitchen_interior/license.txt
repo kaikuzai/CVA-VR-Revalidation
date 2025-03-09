@@ -1,0 +1,8 @@
+Model Information:
+* title:	Cartoon Kitchen Interior
+* source:	https://sketchfab.com/3d-models/cartoon-kitchen-interior-b42fec3f1fd44894b3a032e8a844ab90
+* author:	Tsybe (https://sketchfab.com/imtsybe)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
