@@ -24,7 +24,7 @@
         <a-asset-item id="egg_model" src="assets/egg/scene.gltf"></a-asset-item>
         <a-asset-item
           id="bowl_model"
-          src="assets/bowl/scene.gltf"
+          src="assets/environment/bowl/bowl_v2.gltf"
         ></a-asset-item>
         <a-asset-item
           id="salmon_model"
@@ -56,7 +56,6 @@
                               colliderEndEventProperty: clearedEls;"
         >
         </a-mixin>
-        <a-mixin id="focus" position="0 1.6 -1.4"> </a-mixin>
       </a-assets>
       <!-- END | ASSET MANAGEMENT -->
       <!-- CAMERA ENTITY  -->
@@ -76,16 +75,9 @@
         class="correct"
         gltf-model="assets/egg/scene.gltf"
         scale="0.1 0.1 0.1"
-        position="0 20 -40"
         dynamic-body="shape: none; mass: 5; type:static"
         shape__main="shape: sphere; radius: 0.9"
       >
-        <a-box
-          position="0 2 0"
-          scale="0.5 0.5 0.5"
-          material="color: green"
-          visible="false"
-        ></a-box>
       </a-entity>
 
       <!-- MIIILLLKKK -->
@@ -143,11 +135,26 @@
         id="banana"
         class="correct"
         gltf-model="assets/banana_v3/banana_v3.gltf"
-        position="0 1.6 -2"
         scale="0.005 0.005 0.005"
         body="type: dynamic: mass: 5; shape:none;"
         shape__main="shape: box; halfExtents: 40 20 10; offset:0 -10 0"
       ></a-entity>
+
+      <!-- BOOOWWLL -->
+
+      <a-entity
+        id="bowl"
+        gltf-model="#bowl_model"
+        scale="0.5 0.5 0.5"
+        rotation="0 90 0"
+        body="type: static; mass: 5; shape: none"
+        shape__base="type: box; halfExtents: 0.5 0.01 0.5; offset: 0 -0.35 0;"
+        shape__side1="type: box; halfExtents: 0.45 0.01 0.5; offset:0.7 0 0; orientation:0 0 0.3827 0.9239;"
+        shape__side2="type: box; halfExtents: 0.45 0.01 0.5; offset:-0.7 0 0; orientation: 0 0 -0.3827 1"
+        shape__back="type: box; halfExtents: 0.45 0.01 0.5; offset: 0 0 -0.7; orientation: 0.2706 0.6533 0.2706 0.6533;"
+        shape__front="type: box; halfExtents: 0.45 0.01 0.5; offset: 0 0 0.7; orientation: 0.2706 -0.6533 0.2706 -0.6533;"
+      >
+      </a-entity>
 
       <!-- TEST CUBE -->
       <a-entity
@@ -157,6 +164,16 @@
         position="2 1.8 -1.44"
         material="color: red"
       ></a-entity>
+
+      <a-box
+        id="table_cover"
+        material="height: 255.9; width: 512.02"
+        geometry="depth: 0.02; height: 2.16; width: 1.39"
+        rotation="90 0 0"
+        position="0.025 0.727 -1.167"
+        visible="false"
+        static-body
+      ></a-box>
 
       <!-- GROUND LEVEL -->
       <a-box
