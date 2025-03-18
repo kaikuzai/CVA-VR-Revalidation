@@ -93,68 +93,41 @@
         ></a-entity
       >
 
-      <!-- CAARROOTT -->
       <a-entity
-        id="carrot"
-        class="correct"
-        gltf-model="assets/carrot_v2/carrot_v2.gltf"
-        scale="0.01 0.01 0.01"
-        body="type: dynamic; mass: 5; shape: none"
-        shape__main="shape:box; halfExtents: 35 5 4; offset: 17 -1 1"
-      ></a-entity>
-
-      <!-- FLLOOUURRR -->
-
-      <a-entity
-        id="flour"
-        class="correct"
-        gltf-model="assets/flour_v3/flour_v3.gltf"
-        scale="0.2 0.2 0.2"
-        rotation="0 0 0"
-        body="type: dynamic; mass: 5; shape:none"
-        shape__main="shape: box; halfExtents: 0.7 1.4 1; offset:0 -0.2 0"
+        id="menu"
+        menu=""
+        position="0 1.3 -0.7"
+        rotation="-45 0 0"
+        event-manager=""
       >
+        <a-entity
+          text="align: center; color: white; 
+          value: Opnieuw beginnen \n\n zou je graag opnieuw willen \n beginnen? Druk dan op de \n knop hieronder"
+          scale="0.8 0.8 0.8"
+          position="0 0.02 0"
+        >
+        </a-entity>
+
+        <a-entity
+          id="restartButton"
+          static-body
+          button="label: Restart; width: 0.2; toggleable: true"
+          position="0 -0.13 0"
+          geometry="depth: 0.04; height: 0.05; width: 0.3"
+          material="color: #b02d28"
+          pressable="true"
+          ><a-entity
+            position="0 0 0.02"
+            text="align: center; color: white; value: Begin opnieuw"
+            scale="0.75 0.75 0.75"
+          ></a-entity
+        ></a-entity>
+        <a-entity
+          geometry="depth: 0.01; height: 0.4; width: 0.6"
+          material="color: gray"
+          position="0 0 -0.025"
         ></a-entity
-      >
-
-      <!-- SAAALLMMOONNNN -->
-
-      <a-entity
-        id="salmon"
-        class="incorrect"
-        gltf-model="#salmon_model"
-        scale="0.1 0.1 0.1"
-        body="type: static; mass: 5; shape:none;"
-        shape__main="shape: box; offset:0 -0.2 0.2; halfExtents: 1 0.2 2.1"
-      >
-        ></a-entity
-      >
-
-      <!-- BAANNAAANNAAA -->
-      <a-entity
-        id="banana"
-        class="correct"
-        gltf-model="assets/banana_v3/banana_v3.gltf"
-        scale="0.005 0.005 0.005"
-        body="type: dynamic: mass: 5; shape:none;"
-        shape__main="shape: box; halfExtents: 40 20 10; offset:0 -10 0"
       ></a-entity>
-
-      <!-- BOOOWWLL -->
-
-      <a-entity
-        id="bowl"
-        gltf-model="#bowl_model"
-        scale="0.5 0.5 0.5"
-        rotation="0 90 0"
-        body="type: static; mass: 5; shape: none"
-        shape__base="type: box; halfExtents: 0.5 0.01 0.5; offset: 0 -0.35 0;"
-        shape__side1="type: box; halfExtents: 0.45 0.01 0.5; offset:0.7 0 0; orientation:0 0 0.3827 0.9239;"
-        shape__side2="type: box; halfExtents: 0.45 0.01 0.5; offset:-0.7 0 0; orientation: 0 0 -0.3827 1"
-        shape__back="type: box; halfExtents: 0.45 0.01 0.5; offset: 0 0 -0.7; orientation: 0.2706 0.6533 0.2706 0.6533;"
-        shape__front="type: box; halfExtents: 0.45 0.01 0.5; offset: 0 0 0.7; orientation: 0.2706 -0.6533 0.2706 -0.6533;"
-      >
-      </a-entity>
 
       <!-- TEST CUBE -->
       <a-entity

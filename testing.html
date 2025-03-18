@@ -1,83 +1,73 @@
 <html>
   <head>
     <title>CVA Revalidatie Keuken</title>
-    <!-- IMPORTS -->
+    <!-- IMPORTS LIBRARIES-->
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script src="https://unpkg.com/super-hands/dist/super-hands.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.1.0/dist/aframe-physics-system.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@^4.1.1/dist/aframe-event-set-component.min.js"></script>
     <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
     <script src="https://unpkg.com/aframe-environment-component@1.3.2/dist/aframe-environment-component.min.js"></script>
+    <!-- IMPORTS SCRIPTS -->
     <!-- END | IMPORTS -->
     <!-- FUNCTIONS -->
     <script>
-      // Text-to-Speech function (!change voice)
-      function speakInstruction(message) {
-        if ('speechSynthesis' in window) {
-          const utterance = new SpeechSynthesisUtterance(message);
-          const voices = window.speechSynthesis.getVoices();
-          utterance.voice = voices.find(voice => voice.name === "Google Nederlands (Female)");
-          utterance.lang = 'nl-NL'; 
-          utterance.rate = 0.75; 
-          window.speechSynthesis.speak(utterance);
-        } else {
-          console.warn('Text-to-Speech is not available in this browser.');
-        }
-      }
-    
-      window.addEventListener('load', () => {
-        speakInstruction('Wij beginnen vandaag met het bakken van pannekoeken.');
-      });
-    </script>
+          // turn controller's physics presence on only while button held down
+          AFRAME.registerComponent('phase-shift', {
+            init: function () {
+              var el = this.el
+              el.addEventListener('gripdown', function () {
+                  el.setAttribute('collision-filter', {collisionForces: true})
+              })
+              el.addEventListener('gripup', function () {
+                  el.setAttribute('collision-filter', {collisionForces: false})
+              })
+              }
+          });
 
-    <script>
-      // turn controller's physics presence on only while button held down
-      AFRAME.registerComponent('phase-shift', {
+
+      AFRAME.registerComponent('debug-prod',{
+      init: function () {
+          var el = this.el;
+          var collisionDetected = false;
+
+          el.addEventListener('collisions', function (e) {
+              if (e.detail.els.forEach(function(collision) {
+                  if (collision.id === 'bowl' && collisionDetected == false) {
+                      collisionDetected = true;
+
+                      setTimeout(() =>
+                  {
+                      // Remove entity after 2 seconds
+                      el.parentNode.removeChild(el)
+                  }, 2000)
+                  }
+
+              }));
+          })
+      }
+      });
+
+      AFRAME.registerComponent('restart-trigger', {
         init: function () {
           var el = this.el
-          el.addEventListener('gripdown', function () {
-            el.setAttribute('collision-filter', {collisionForces: true})
+
+          el.addEventListener('collisions', function (e) {
+            if (collision.id === 'rhand' || collision.id === 'lhand') {
+              window.location.reload()
+            }
           })
-          el.addEventListener('gripup', function () {
-            el.setAttribute('collision-filter', {collisionForces: false})
-          })
         }
-      });
+      })
 
-      AFRAME.registerComponent('focus-listener', {
-        init: function () {
-            var el = this.el
-            el.addEventListener('mouseenter', function () {
-                var box = el.querySelector('a-box')
-                box.setAttribute('visible', 'true')
-            });
-            el.addEventListener('mouseleave', function () {
-                var box = el.querySelector('a-box')
-                box.setAttribute('visible', 'false')
+          function resetAllToOriginalPosition() {
 
-            });
-        }
-      });
-
-      AFRAME.registerComponent('hover-listener', {
-        init: function () {
-            el.addEventListener('hover-over', function () {
-                var box = el.querySelector('a-box')
-                box.setAttribute('visible', 'true')
-            });
-            el.addEventListener('hover-end', function () {
-                var box = el.querySelector('a-box')
-                box.setAttribute('visible', 'true')
-            });
-        }
-      });
+          }
     </script>
-
-
     <!-- END | FUNCTIONS -->
   </head>
   <body>
-    <a-scene physics="debug:  false" environment="preset: forest; shadow: true">
+    <a-scene physics="debug:  true" environment="preset: forest; shadow: true">
       <!-- ASSET MANAGEMENT -->
       <a-assets>
         <!-- GLTF ASSETS -->
@@ -85,10 +75,6 @@
           id="kitchen_model"
           src="assets/environment/cartoon_kitchen_interior/scene.gltf"
         ></a-asset-item>
-        <a-asset-item
-        id="cabinet_model"
-        src="assets/environment/kitchen_dresser/scene.gltf"
-      ></a-asset-item>
         <a-asset-item
           id="bowl_model"
           src="assets/environment/bowl/bowl_v2.gltf"
@@ -109,24 +95,33 @@
         </a-mixin>
         <a-mixin
           id="food_mixin"
-          body="type: dynamic; mass: 5; shape: none"
+          body="type: dynamic; mass: 1; shape: none"
           grabbable
           hoverable
           draggable
-          physics-collider
         ></a-mixin>
       </a-assets>
       <!-- END | MIXIN ASSEETS -->
       <!-- END | ASSET MANAGEMENT -->
       <!-- CAMERA ENTITY  -->
-      <a-entity id="camera_entity">
-        <a-camera positon="0 1.6 0">
+      <a-entity id="rig" position="0 0 0" id="camera_entity">
+        <a-camera
+          positon="0 1.6 -2"
+          rotation="-35 0 0"
+          camera=""
+          look-controls=""
+          wasd-controls=""
+          data-aframe-inspector-original-camera=""
+        >
           <a-cursor
             id="sight_cursor"
-            raycaster="showLine: false"
+            raycaster=""
             position="0 0 -0.2"
             visible="false"
-            collisionForces="false"
+            collisionforces="false"
+            material=""
+            cursor=""
+            geometry=""
           ></a-cursor>
         </a-camera>
         <a-entity id="rhand" mixin="touch" hand-controls="hand: right">
@@ -152,7 +147,6 @@
         light=""
       >
       </a-light>
-
 
       <!-- END | DEFAULT LIGHTS -->
       <!-- KITCHEN ENTITIES -->
@@ -182,33 +176,97 @@
       <a-box
         id="table_cover"
         material="height: 255.9; width: 512.02"
-        geometry="depth: 0.02; height: 2.16; width: 1.39"
+        geometry="depth: 0.1; height: 2.16; width: 1.39"
         rotation="90 0 0"
-        position="0.025 0.727 -1.167"
+        position="0.025 0.70 -1.167"
         visible="false"
         static-body
       ></a-box>
-      
-      <!-- CABINET ENTITY -->
-      <a-entity
-      id="cabinet"
-        gltf-model="#cabinet_model"
-        scale="0.960 0.860 0.990"
-        rotation="0 180 0"
-        position="-3.175 0.051 0.263"
-        body="type: static; mass: 5; shape: none"
-    ></a-entity>
 
-    <a-box
-        id="cabinet_cover"
-        geometry="depth: 0.02; height: 2.16;"
-        rotation="90 0 0"
-        position="-3.18 0.842 0.262"
-        scale="0.470 0.660 1"
-        visible="true"
+      <!-- BORDERS -->
+      <a-entity
+        id="room_edge_left"
+        geometry="primitve: box; depth: 10; height: 2.890"
+        position="-4.065 1.370 0"
         static-body
-      ></a-box>
-    <!-- END | CABINET ENTITY -->
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="room_edge_right"
+        geometry="primitve: box; depth: 10; height: 2.890"
+        position="3.371 1.370 0"
+        static-body
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="room_edge_front"
+        geometry="primitve: box; width: 8; depth: 0.5; height: 3;"
+        position="-0.072 1.396 -5.288"
+        static-body
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="room_edge_behind"
+        geometry="primitve: box; width: 8; depth: 0.5; height: 3;"
+        position="-0.072 1.396 4.670"
+        static-body
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="room_edge_counter_left"
+        geometry="primitve: box; depth: 5; height: 1.2;"
+        position="-3.16 0.224 -3.174"
+        static-body
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="room_edge_counter_front"
+        geometry="primitve: box; depth: 1; height: 1.2; width: 2.5"
+        position="-1.753 0.248 -4.624"
+        static-body
+        visible="false"
+      ></a-entity>
+
+      <!-- END | BORDERS -->
+
+      <!-- MENU ENTITY -->
+      <a-entity
+        id="menu"
+        menu=""
+        position="0.694 1.039 -0.163"
+        rotation="-45 -69.051 0"
+        event-manager=""
+      >
+        <a-entity
+          text="align: center; color: white; 
+        value: Opnieuw beginnen \n\n zou je graag opnieuw willen \n beginnen? Druk dan op de \n knop hieronder"
+          scale="0.8 0.8 0.8"
+          position="0 0.02 0"
+        >
+        </a-entity>
+
+        <a-entity
+          id="restartButton"
+          static-body
+          restart-trigger
+          button="label: Restart; width: 0.2; toggleable: true"
+          position="0 -0.13 0"
+          geometry="depth: 0.04; height: 0.05; width: 0.3"
+          material="color: #b02d28"
+          pressable="true"
+          ><a-entity
+            position="0 0 0.02"
+            text="align: center; color: white; value: Begin opnieuw"
+            scale="0.75 0.75 0.75"
+          ></a-entity
+        ></a-entity>
+        <a-entity
+          geometry="depth: 0.01; height: 0.4; width: 0.6"
+          material="color: gray"
+          position="0 0 -0.025"
+        ></a-entity
+      ></a-entity>
+      <!-- END | MENU ENTITY -->
 
       <!-- BOWL ENTITY -->
       <a-entity
@@ -216,12 +274,13 @@
         gltf-model="#bowl_model"
         scale="0.25 0.25 0.25"
         position="0 0.879 -0.36"
-        body="type: static; mass: 5; shape: none"
+        body="type: static; mass: 9; shape: none"
         shape__base="type: box; halfExtents: 0.5 0.5 0.5; offset: 0 -0.75 0;"
         shape__side1="type: box; halfExtents: 0.45 0.01 0.5; offset:0.7 0 0; orientation:0 0 0.3827 0.9239;"
         shape__side2="type: box; halfExtents: 0.45 0.01 0.5; offset:-0.7 0 0; orientation: 0 0 -0.3827 1"
         shape__back="type: box; halfExtents: 0.45 0.01 0.5; offset: 0 0 -0.7; orientation: 0.2706 0.6533 0.2706 0.6533;"
         shape__front="type: box; halfExtents: 0.45 0.01 0.5; offset: 0 0 0.7; orientation: 0.2706 -0.6533 0.2706 -0.6533;"
+        physics-collider
       >
       </a-entity>
       <!-- END | BOWL ENTITY -->
@@ -246,8 +305,12 @@
         class="correct"
         gltf-model="assets/food/egg/scene.gltf"
         scale="0.05 0.05 0.05"
-        position="0.567 0.871 -0.426"
+        original_scale="0.05 0.05 0.05"
+        position="0. 1.5 -0.426"
+        original_position="0. 1.5 -0.426"
         shape__main="shape: sphere; radius: 1"
+        physics-collider="ignoreSleep: false"
+        debug-prod
       >
       </a-entity>
 
@@ -298,16 +361,6 @@
         shape__main="shape:box; halfExtents: 35 5 4; offset: 17 -1 1"
       ></a-entity>
 
-      <a-entity
-        id="chocolate"
-        class="correct"
-        mixin="food_mixin"
-        position="-3.119 0.874 0.137"
-        rotation="0 90 0"
-        gltf-model="assets/food/chocolate_bar/scene.gltf"
-        shape__main="shape:box;"
-        scale="0.105 0.105 0.135"
-      ></a-entity>
       <!-- END | FOOD ENTITIES -->
       <!-- GROUND LEVEL -->
       <a-box
