@@ -114,6 +114,24 @@
           hoverable
           draggable
         ></a-mixin>
+        <img id="pancakes" src="https://media.istockphoto.com/id/1071627996/vector/pancakes-with-butter-and-maple-syrup-sweet-on-white-plate.jpg?s=612x612&w=0&k=20&c=dKY-1LxTUAN_VEkTO-hr18UT9HQAtaqjCNOD1DanP8M=" crossorigin="anonymous"/>
+       
+        <img id="birthdayCake" src="https://media.istockphoto.com/id/901911608/vector/birthday-cake-vector-isolated.jpg?s=612x612&w=0&k=20&c=Yh2ULwtHQ6Tfag3kO6kSmA1FYnc7OeQzGz1GldGWBQs=" crossorigin="anonymous"/>
+      
+        <a-mixin
+        id="frame"
+        geometry="primitive: plane; width: 0.5783552; height: 0.8192"
+        material="color: white; shader: flat"
+        animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter"
+        animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave"
+       ></a-mixin>
+         <a-mixin
+          id="poster"
+          geometry="primitive: plane; width: 0.544768; height: 0.786432"
+          material="color: white; shader: flat"
+          material="shader: flat"
+          position="0 0 0.005"
+         ></a-mixin>
       </a-assets>
       <!-- END | MIXIN ASSEETS -->
       <!-- END | ASSET MANAGEMENT -->
@@ -321,6 +339,19 @@
         visible="false"
         static-body
       ></a-box>
+         <!-- MENU -->
+         <a-entity id="menu" highlight>
+          <a-plane  color="#FFFFFF" opacity="0.5" position="0 1.7 -2" width="2" heigth="10"></a-plane>
+          <a-text value="Kies een recept" position="-0.75 2.3 -2" scale="1 1 1"></a-text>
+          <a-entity id="pancakesButton" position="-0.5 1.7 -2" mixin="frame" class="raycastable menu-button">
+            <a-entity material="src: #pancakes" mixin="poster"></a-entity>
+          </a-entity>
+
+          <a-entity id="birthdayCakeButton" position="0.5 1.7 -2" mixin="frame" class="raycastable menu-button"  event-set__click="visible: false;">
+            <a-entity material="src: #birthdayCake" mixin="poster"></a-entity>
+          </a-entity>
+        </a-entity>
+        <!-- END | MENU -->
     </a-scene>
   </body>
 </html>
