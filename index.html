@@ -11,6 +11,26 @@
     <!-- END | IMPORTS -->
     <!-- FUNCTIONS -->
     <script>
+      // Text-to-Speech function (!change voice)
+      function speakInstruction(message) {
+        if ('speechSynthesis' in window) {
+          const utterance = new SpeechSynthesisUtterance(message);
+          const voices = window.speechSynthesis.getVoices();
+          utterance.voice = voices.find(voice => voice.name === "Google Nederlands (Female)");
+          utterance.lang = 'nl-NL'; 
+          utterance.rate = 0.75; 
+          window.speechSynthesis.speak(utterance);
+        } else {
+          console.warn('Text-to-Speech is not available in this browser.');
+        }
+      }
+    
+      window.addEventListener('load', () => {
+        speakInstruction('Wij beginnen vandaag met het bakken van pannekoeken.');
+      });
+    </script>
+
+    <script>
       // turn controller's physics presence on only while button held down
       AFRAME.registerComponent('phase-shift', {
         init: function () {
@@ -52,6 +72,8 @@
         }
       });
     </script>
+
+
     <!-- END | FUNCTIONS -->
   </head>
   <body>
@@ -63,6 +85,10 @@
           id="kitchen_model"
           src="assets/environment/cartoon_kitchen_interior/scene.gltf"
         ></a-asset-item>
+        <a-asset-item
+        id="cabinet_model"
+        src="assets/environment/kitchen_dresser/scene.gltf"
+      ></a-asset-item>
         <a-asset-item
           id="bowl_model"
           src="assets/environment/bowl/bowl_v2.gltf"
@@ -126,6 +152,7 @@
       >
       </a-light>
 
+
       <!-- END | DEFAULT LIGHTS -->
       <!-- KITCHEN ENTITIES -->
       <a-entity
@@ -160,6 +187,27 @@
         visible="false"
         static-body
       ></a-box>
+      
+      <!-- CABINET ENTITY -->
+      <a-entity
+      id="cabinet"
+        gltf-model="#cabinet_model"
+        scale="0.960 0.860 0.990"
+        rotation="0 180 0"
+        position="-3.175 0.051 0.263"
+        body="type: static; mass: 5; shape: none"
+    ></a-entity>
+
+    <a-box
+        id="cabinet_cover"
+        geometry="depth: 0.02; height: 2.16;"
+        rotation="90 0 0"
+        position="-3.18 0.842 0.262"
+        scale="0.470 0.660 1"
+        visible="true"
+        static-body
+      ></a-box>
+    <!-- END | CABINET ENTITY -->
 
       <!-- BOWL ENTITY -->
       <a-entity
@@ -250,6 +298,16 @@
         shape__main="shape:box; halfExtents: 35 5 4; offset: 17 -1 1"
       ></a-entity>
 
+      <a-entity
+        id="chocolate"
+        class="correct"
+        mixin="food_mixin"
+        position="-3.119 0.874 0.137"
+        rotation="0 90 0"
+        gltf-model="assets/food/chocolate_bar/scene.gltf"
+        shape__main="shape:box;"
+        scale="0.105 0.105 0.135"
+      ></a-entity>
       <!-- END | FOOD ENTITIES -->
       <!-- GROUND LEVEL -->
       <a-box
