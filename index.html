@@ -28,9 +28,56 @@
       window.addEventListener('load', () => {
         speakInstruction('Wij beginnen vandaag met het bakken van pannekoeken.');
       });
-    </script>
 
-    <script>
+      AFRAME.registerComponent('collision-listener', {
+        init: function () {
+          const correctIngredients = ['Melk', 'Bloem', 'Eieren']; 
+
+          this.el.addEventListener('collide', (event) => {
+            const bowlHitbox = event.detail.body.el; // bowl plane
+            const otherEntity = event.target; // ingredient
+            
+            // checks if a ingredient collides with the bowl plane
+            if (otherEntity && bowlHitbox.id === 'bowl-plane') {
+
+              // check if sound is already played
+              if (!otherEntity.hasAttribute('sound-played')) {
+                const ingredientName = otherEntity.id;
+                let audio;
+
+                if (otherEntity.classList.contains('correct')) {
+                  audio = new Audio('assets/sounds/correct.mp3');
+                  
+                  // turns visibility off when ingredient hit the bowl plane
+                  otherEntity.setAttribute('visible', false);
+
+                  let ingredientList = document.querySelector('#ingredient-list');
+                  let ingredientText = ingredientList.getAttribute('text').value;
+
+                  // replaces [ ] to [X]
+                  let regex = new RegExp(`\\[ \\] ${ingredientName}`, 'g');
+                  let updatedText = ingredientText.replace(regex, `[X] ${ingredientName}`);
+
+                  // updates ingredient list with the new value
+                  ingredientList.setAttribute('text', 'value', updatedText);
+                } else {
+                  // plays audio when wrong ingredient is used
+                  audio = new Audio('assets/sounds/wrong.mp3');
+                }
+
+                audio.volume = 0.4;
+                audio.play();
+
+                // adds sound-played so sound only is played ones
+                otherEntity.setAttribute('sound-played', true);
+              }
+            } else {
+              console.log('No collision with the bowl.');
+            }
+          });
+        }
+      });
+
       // turn controller's physics presence on only while button held down
       AFRAME.registerComponent('phase-shift', {
         init: function () {
@@ -76,7 +123,7 @@
     <!-- END | FUNCTIONS -->
   </head>
   <body>
-    <a-scene physics="debug:  false" environment="preset: forest; shadow: true">
+    <a-scene physics="debug: false" environment="preset: forest; shadow: true">
       <!-- ASSET MANAGEMENT -->
       <a-assets>
         <!-- GLTF ASSETS -->
@@ -108,12 +155,12 @@
         </a-mixin>
         <a-mixin
           id="food_mixin"
-          body="type: dynamic; mass: 5; shape: none"
+          body="type: dynamic; mass: 1; shape: none"
           grabbable
           hoverable
           draggable
-          physics-collider
         ></a-mixin>
+
         <img id="pancakes" src="https://media.istockphoto.com/id/1071627996/vector/pancakes-with-butter-and-maple-syrup-sweet-on-white-plate.jpg?s=612x612&w=0&k=20&c=dKY-1LxTUAN_VEkTO-hr18UT9HQAtaqjCNOD1DanP8M=" crossorigin="anonymous"/>
        
         <img id="birthdayCake" src="https://media.istockphoto.com/id/901911608/vector/birthday-cake-vector-isolated.jpg?s=612x612&w=0&k=20&c=Yh2ULwtHQ6Tfag3kO6kSmA1FYnc7OeQzGz1GldGWBQs=" crossorigin="anonymous"/>
@@ -223,15 +270,16 @@
         ></a-text>
       </a-entity>
   
-    <a-plane
+      <a-plane
+      id="ingredient-list"
       rotation="0 -45 0"
       position="1.5 1.6 -2.3"
       color="grey"
       width="1.1"
       height="1.1"
-      text="value: Ingredienten lijst:\n\n 1. Bloem\n2. Eieren\n3. Melk; align: left; color: white; width: 1; wrapCount: 15"
-      opacity="0.95"
+      text="value: Ingredienten lijst:\n\n[ ] Bloem\n[ ] Eieren\n[ ] Melk; align: left; color: white; width: 1; wrapCount: 15"
     ></a-plane>
+    
     
 
       <a-box
@@ -280,7 +328,19 @@
         shape__back="type: box; halfExtents: 0.45 0.01 0.5; offset: 0 0 -0.7; orientation: 0.2706 0.6533 0.2706 0.6533;"
         shape__front="type: box; halfExtents: 0.45 0.01 0.5; offset: 0 0 0.7; orientation: 0.2706 -0.6533 0.2706 -0.6533;"
       >
+
       </a-entity>
+
+      <a-box 
+      id="bowl-plane" 
+      geometry="primitive: box;" 
+      material="color: white;" 
+      position="0 0.817 -0.365" 
+      rotation="0 0 0"
+      scale="0.180 0 0.200"
+      static-body
+      visible="false"
+    ></a-box>
       <!-- END | BOWL ENTITY -->
       <!-- END | KITCHEN ENTITIES -->
 
@@ -289,36 +349,38 @@
       <a-entity
         id="banana"
         mixin="food_mixin"
-        class="correct"
+        class="incorrect"
         gltf-model="assets/food/banana_v3/banana_v3.gltf"
         position="0.545 0.860 -0.784"
         rotation="-90 0 0"
         scale="0.0025 0.0025 0.0025"
         shape__main="shape: box; halfExtents: 40 20 10; offset:0 -10 0 "
+        collision-listener
       ></a-entity>
 
       <a-entity
-        id="egg"
+        id="Eieren"
         mixin="food_mixin"
         class="correct"
         gltf-model="assets/food/egg/scene.gltf"
         scale="0.05 0.05 0.05"
         position="0.567 0.871 -0.426"
         shape__main="shape: sphere; radius: 1"
+        collision-listener
       >
       </a-entity>
 
       <a-entity
-        id="milk"
-        mixin="food_mixin"
-        class="correct"
-        gltf-model="assets/food/milk_v3/scene_v2.gltf"
-        scale="0.01 0.01 0.01"
-        position="-0.462 0.973 -0.501"
-        shape__main="shape: box; halfExtents: 3.75 10 4.2"
-      >
-        ></a-entity
-      >
+      id="Melk"
+      mixin="food_mixin"
+      class="correct"
+      gltf-model="assets/food/milk_v3/scene_v2.gltf"
+      scale="0.01 0.01 0.01"
+      position="-0.462 0.973 -0.501"
+      shape__main="shape: box; halfExtents: 3.75 10 4.2"
+      collision-listener
+    ></a-entity>
+    
 
       <a-entity
         id="salmon"
@@ -328,11 +390,12 @@
         scale="0.05 0.05 0.05"
         position="0 0.825 -1.330"
         shape__main="shape: box; offset:0 -0.2 0.2; halfExtents: 1 0.2 2.1"
+        collision-listener
       >
       </a-entity>
 
       <a-entity
-        id="flour"
+        id="Bloem"
         mixin="food_mixin"
         class="correct"
         mixin="food_item_box"
@@ -340,30 +403,33 @@
         scale="0.1 0.1 0.1"
         position="-0.462 1.005 -1"
         shape__main="shape: box; halfExtents: 0.7 1.4 1; offset:0 -0.2 0"
+        collision-listener
       >
         ></a-entity
       >
 
       <a-entity
         id="carrot"
-        class="correct"
+        class="incorrect"
         mixin="food_mixin"
         position="0.264 0.885 -1.095"
         rotation="0 -45 0"
         gltf-model="assets/food/carrot_v2/carrot_v2.gltf"
         scale="0.005 0.005 0.005"
         shape__main="shape:box; halfExtents: 35 5 4; offset: 17 -1 1"
+        collision-listener
       ></a-entity>
 
       <a-entity
         id="chocolate"
-        class="correct"
+        class="incorrect"
         mixin="food_mixin"
         position="-3.119 0.874 0.137"
         rotation="0 90 0"
         gltf-model="assets/food/chocolate_bar/scene.gltf"
         shape__main="shape:box;"
         scale="0.105 0.105 0.135"
+        collision-listener
       ></a-entity>
       <!-- END | FOOD ENTITIES -->
       <!-- GROUND LEVEL -->
