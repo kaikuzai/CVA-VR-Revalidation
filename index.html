@@ -71,6 +71,59 @@
             });
         }
       });
+
+      AFRAME.registerComponent("input-listen", {
+        init: function () {
+          let el = this.el;
+          const startScreen = document.querySelector("#start-screen");
+          const ingedrientsList = document.querySelector("#ingredients-list");
+          const menu = document.querySelector("#menu");
+          const chosenRecept = document.querySelector("#chosenRecept");
+          const chosenReceptText = document.querySelector("#chosenReceptText");
+          const correctFood = document.querySelectorAll(".correct");
+          const incorrectFood = document.querySelectorAll(".incorrect");
+          console.log(correctFood,incorrectFood)
+
+          el.addEventListener("abuttonup", function (e) {
+            console.log("A-button ingedrukt!", e.target.id);
+            menu.setAttribute('visible', 'false')
+            chosenRecept.setAttribute('visible', 'true');
+            chosenReceptText.setAttribute('value', 'Jij hebt gekozen om pannenkoeken te maken!'); 
+            setTimeout(() => {
+              chosenRecept.setAttribute('visible', 'false');
+              chosenReceptText.setAttribute('value', '');
+              startScreen.setAttribute('visible', 'true');
+              ingedrientsList.setAttribute('visible', 'true');
+              correctFood.forEach(function (food) {
+            food.setAttribute('visible', 'true');
+            });
+            incorrectFood.forEach(function (food) {
+            food.setAttribute('visible', 'true');
+             });
+            }, 7000);
+          });
+          
+          el.addEventListener("bbuttonup", function (e) {
+            console.log("b-button ingedrukt!", e.target.id);
+            menu.setAttribute('visible', 'false')
+            chosenRecept.setAttribute('visible', 'true');
+            chosenReceptText.setAttribute('value', 'Jij hebt gekozen om taart te maken!'); 
+            setTimeout(() => {
+              chosenRecept.setAttribute('visible', 'false');
+              chosenReceptText.setAttribute('value', '');
+              startScreen.setAttribute('visible', 'true');
+              ingedrientsList.setAttribute('visible', 'true');
+              correctFood.forEach(function (food) {
+            food.setAttribute('visible', 'true');
+            });
+            incorrectFood.forEach(function (food) {
+            food.setAttribute('visible', 'true');
+             });
+            }, 7000);
+          });
+            
+        },
+      });
     </script>
 
     <!-- END | FUNCTIONS -->
@@ -120,14 +173,14 @@
       
         <a-mixin
         id="frame"
-        geometry="primitive: plane; width: 0.5783552; height: 0.8192"
+        geometry="primitive: plane; width: 0.5783552; height: 0.72"
         material="color: white; shader: flat"
         animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter"
         animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave"
        ></a-mixin>
          <a-mixin
           id="poster"
-          geometry="primitive: plane; width: 0.544768; height: 0.786432"
+          geometry="primitive: plane; width: 0.544768; height: 0.67"
           material="color: white; shader: flat"
           material="shader: flat"
           position="0 0 0.005"
@@ -146,9 +199,9 @@
             collisionForces="false"
           ></a-cursor>
         </a-camera>
-        <a-entity id="rhand" mixin="touch" hand-controls="hand: right">
+        <a-entity id="rhand" mixin="touch" hand-controls="hand: right" input-listen>
         </a-entity>
-        <a-entity id="lhand" mixin="touch" hand-controls="hand: left">
+        <a-entity id="lhand" mixin="touch" hand-controls="hand: left" input-listen>
         </a-entity>
       </a-entity>
       <!-- END | CAMERA ENTITY -->
@@ -195,7 +248,7 @@
       >
       </a-entity>
 
-      <a-entity position="2 1.6 0">
+      <a-entity id="start-screen" position="2 1.6 0" visible="false">
         <a-plane
           rotation="0 -90 0"
           position="0 0 0"
@@ -224,6 +277,7 @@
       </a-entity>
   
     <a-plane
+      id="ingredients-list"
       rotation="0 -45 0"
       position="1.5 1.6 -2.3"
       color="grey"
@@ -231,6 +285,7 @@
       height="1.1"
       text="value: Ingredienten lijst:\n\n 1. Bloem\n2. Eieren\n3. Melk; align: left; color: white; width: 1; wrapCount: 15"
       opacity="0.95"
+      visible="false"
     ></a-plane>
     
 
@@ -295,6 +350,7 @@
         rotation="-90 0 0"
         scale="0.0025 0.0025 0.0025"
         shape__main="shape: box; halfExtents: 40 20 10; offset:0 -10 0 "
+        visible="false"
       ></a-entity>
 
       <a-entity
@@ -305,6 +361,7 @@
         scale="0.05 0.05 0.05"
         position="0.567 0.871 -0.426"
         shape__main="shape: sphere; radius: 1"
+        visible="false"
       >
       </a-entity>
 
@@ -316,6 +373,7 @@
         scale="0.01 0.01 0.01"
         position="-0.462 0.973 -0.501"
         shape__main="shape: box; halfExtents: 3.75 10 4.2"
+        visible="false"
       >
         ></a-entity
       >
@@ -328,6 +386,7 @@
         scale="0.05 0.05 0.05"
         position="0 0.825 -1.330"
         shape__main="shape: box; offset:0 -0.2 0.2; halfExtents: 1 0.2 2.1"
+        visible="false"
       >
       </a-entity>
 
@@ -340,6 +399,7 @@
         scale="0.1 0.1 0.1"
         position="-0.462 1.005 -1"
         shape__main="shape: box; halfExtents: 0.7 1.4 1; offset:0 -0.2 0"
+        visible="false"
       >
         ></a-entity
       >
@@ -353,6 +413,7 @@
         gltf-model="assets/food/carrot_v2/carrot_v2.gltf"
         scale="0.005 0.005 0.005"
         shape__main="shape:box; halfExtents: 35 5 4; offset: 17 -1 1"
+        visible="false"
       ></a-entity>
 
       <a-entity
@@ -364,6 +425,7 @@
         gltf-model="assets/food/chocolate_bar/scene.gltf"
         shape__main="shape:box;"
         scale="0.105 0.105 0.135"
+        visible="false"
       ></a-entity>
       <!-- END | FOOD ENTITIES -->
       <!-- GROUND LEVEL -->
@@ -379,16 +441,25 @@
         static-body
       ></a-box>
          <!-- MENU -->
-         <a-entity id="menu" highlight>
-          <a-plane  color="#FFFFFF" opacity="0.5" position="0 1.7 -2" width="2" heigth="10"></a-plane>
-          <a-text value="Kies een recept" position="-0.75 2.3 -2" scale="1 1 1"></a-text>
+         <a-entity id="menu" highlight input-listen>
+          <a-plane  color="#FFFFFF" opacity="0.5" position="0 1.6 -2" width="2" heigth="5"></a-plane>
+          <a-text value="Kies een recept" position="-0.65 2.3 -2" scale="0.8 0.8 0.8"></a-text>
           <a-entity id="pancakesButton" position="-0.5 1.7 -2" mixin="frame" class="raycastable menu-button">
             <a-entity material="src: #pancakes" mixin="poster"></a-entity>
+            <a-text value="Druk op A" position="-0.25 -0.5 0" scale="0.5 0.5 0.5"></a-text>
           </a-entity>
+   
 
           <a-entity id="birthdayCakeButton" position="0.5 1.7 -2" mixin="frame" class="raycastable menu-button"  event-set__click="visible: false;">
             <a-entity material="src: #birthdayCake" mixin="poster"></a-entity>
+            <a-text value="Druk op B" position="-0.25 -0.5 0" scale="0.5 0.5 0.5"></a-text>
           </a-entity>
+          
+        </a-entity>
+
+        <a-entity id="chosenRecept" visible="false" highlight input-listen>
+        <a-plane  color="grey" position="0 1.7 -2" width="2.5" heigth="0.5"></a-plane>
+          <a-text id="chosenReceptText" position="0 1.7 -2" align="center" scale="0.5 0.5 0.5"></a-text>
         </a-entity>
         <!-- END | MENU -->
     </a-scene>
