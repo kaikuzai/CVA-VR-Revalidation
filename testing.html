@@ -1,7 +1,7 @@
 <html>
   <head>
     <title>CVA Revalidatie Keuken</title>
-    <!-- IMPORTS LIBRARIES-->
+    <!-- IMPORTS LIBRARIES -->
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script src="https://unpkg.com/super-hands/dist/super-hands.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.1.0/dist/aframe-physics-system.js"></script>
@@ -9,91 +9,44 @@
     <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
     <script src="https://unpkg.com/aframe-environment-component@1.3.2/dist/aframe-environment-component.min.js"></script>
     <!-- IMPORTS SCRIPTS -->
+    <script src="scripts/sound-assistance.js"></script>
+    <script src="scripts/hand-controls.js"></script>
+    <script src="scripts/start-menu-selection.js"></script>
+    <script src="scripts/restart-menu.js"></script>
+    <script src="scripts/bowl-interaction.js"></script>
     <!-- END | IMPORTS -->
-    <!-- FUNCTIONS -->
-    <script>
-          // turn controller's physics presence on only while button held down
-          AFRAME.registerComponent('phase-shift', {
-            init: function () {
-              var el = this.el
-              el.addEventListener('gripdown', function () {
-                  el.setAttribute('collision-filter', {collisionForces: true})
-              })
-              el.addEventListener('gripup', function () {
-                  el.setAttribute('collision-filter', {collisionForces: false})
-              })
-              }
-          });
-
-
-      AFRAME.registerComponent('debug-prod',{
-      init: function () {
-          var el = this.el;
-          var collisionDetected = false;
-
-          el.addEventListener('collisions', function (e) {
-              if (e.detail.els.forEach(function(collision) {
-                  if (collision.id === 'bowl' && collisionDetected == false) {
-                      collisionDetected = true;
-
-                      setTimeout(() =>
-                  {
-                      // Remove entity after 2 seconds
-                      el.parentNode.removeChild(el)
-                  }, 2000)
-                  }
-
-              }));
-          })
-      }
-      });
-
-      AFRAME.registerComponent('restart-trigger', {
-        init: function () {
-          var el = this.el
-
-          el.addEventListener('abuttondown', function () {
-            console.log("Trigger registered");
-            window.location.reload();
-          });
-        }
-      });
-
-
-
-          function resetAllToOriginalPosition() {
-
-          }
-    </script>
-    <!-- END | FUNCTIONS -->
   </head>
   <body>
-    <a-scene physics="debug:  true" environment="preset: forest; shadow: true">
+    <a-scene physics="debug:  false" environment="preset: forest; shadow: true">
       <!-- ASSET MANAGEMENT -->
       <a-assets>
-        <!-- IMAGE ASSETS -->
-        <img
-          id="pancakes"
-          src="https://media.istockphoto.com/id/1071627996/vector/pancakes-with-butter-and-maple-syrup-sweet-on-white-plate.jpg?s=612x612&w=0&k=20&c=dKY-1LxTUAN_VEkTO-hr18UT9HQAtaqjCNOD1DanP8M="
-          crossorigin="anonymous"
-        />
-
-        <img
-          id="birthdayCake"
-          src="https://media.istockphoto.com/id/901911608/vector/birthday-cake-vector-isolated.jpg?s=612x612&w=0&k=20&c=Yh2ULwtHQ6Tfag3kO6kSmA1FYnc7OeQzGz1GldGWBQs="
-          crossorigin="anonymous"
-        />
-        <!-- END | IMAGE ASSETS -->
         <!-- GLTF ASSETS -->
         <a-asset-item
           id="kitchen_model"
           src="assets/environment/cartoon_kitchen_interior/scene.gltf"
         ></a-asset-item>
         <a-asset-item
+          id="cabinet_model"
+          src="assets/environment/kitchen_dresser/scene.gltf"
+        ></a-asset-item>
+        <a-asset-item
           id="bowl_model"
           src="assets/environment/bowl/bowl_v2.gltf"
         ></a-asset-item>
         <!-- END | GLFT ASSETS -->
+        <!-- IMAGES -->
+        <img
+          id="pancakes"
+          src="assets/images/pancakes.jpg"
+          crossorigin="anonymous"
+        />
+
+        <img
+          id="birthdayCake"
+          src="assets/images/cake.jpg"
+          crossorigin="anonymous"
+        />
+        <!-- END| IMAGES -->
         <!-- MIXIN ASSETS -->
         <a-mixin
           id="touch"
@@ -109,10 +62,12 @@
         </a-mixin>
         <a-mixin
           id="food_mixin"
-          body="type: dynamic; mass: 1; shape: none"
+          body="type: dynamic; mass: 5; shape: none"
           grabbable
           hoverable
           draggable
+          physics-collider="ignoreSleep: false"
+          collision-listener
         ></a-mixin>
         <a-mixin
           id="frame"
@@ -122,8 +77,17 @@
           animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave"
         ></a-mixin>
         <a-mixin
+          id="frame"
+          geometry="primitive: plane; width: 0.5783552; height: 0.72"
+          material="color: white; shader: flat"
+          animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter"
+          animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave"
+        ></a-mixin>
+        <a-mixin
           id="poster"
-          geometry="primitive: plane; width: 0.55; height: 0.55"
+          geometry="primitive: plane; width: 0.5; height: 0.5"
+          id="poster"
+          geometry="primitive: plane; width: 0.5; height: 0.5"
           material="color: white; shader: flat"
           material="shader: flat"
           position="0 0 0.005"
@@ -131,70 +95,59 @@
       </a-assets>
       <!-- END | MIXIN ASSEETS -->
       <!-- END | ASSET MANAGEMENT -->
+      <!-- CAMERA ENTITY  -->
+      <a-entity id="camera_entity">
+        <a-camera positon="0 1.6 0">
+          <a-cursor
+            id="sight_cursor"
+            raycaster="showLine: false"
+            position="0 0 -0.2"
+            visible="false"
+            collisionForces="false"
+          ></a-cursor>
+        </a-camera>
 
-      <!-- INFORMATION -->
-      <!-- RECIPE MENU SCREEN -->
+        <a-entity
+          id="rhand"
+          mixin="touch"
+          hand-controls="hand: right"
+          meta-touch-controls="hand: right"
+          restart-trigger
+          input-listen
+        >
+        </a-entity>
+        <a-entity id="lhand" mixin="touch" hand-controls="hand: left">
+        </a-entity>
+      </a-entity>
+      <!-- END | CAMERA ENTITY -->
+      <!-- DEFAULT LIGHTS -->
       <a-entity
-        id="recipe_menu"
-        position="0 1.7 -1.5"
-        highlight=""
-        visible="false"
+        id="ambient_light"
+        light="color: #BBB; intensity: 0.45; type: ambient"
+        position="-0.04043 1.73926 0.065"
       >
+      </a-entity>
+      <a-light
+        id="directional_light"
+        type="directional"
+        color="#FFFFFF"
+        intensity="0.6"
+        castshadow="true"
+        position="0.57846 2.07482 0.14666"
+        light=""
+      >
+      </a-light>
+
+      <!-- END | DEFAULT LIGHTS -->
+      <!-- INFORMATION -->
+      <!-- RECIPE SELECTION SCREEN -->
+      <a-entity id="recipe_menu" position="0 1.7 -1.5" visible="true">
         <a-box
           id="recipe_menu_background"
           material="color: #9f8989"
-          geometry="depth: 0.1; height: 1.2; width: 2.2"
+          geometry="depth: 0.1; height: 1.5; width: 2.2"
           position="0 0 -0.06"
           visible=""
-        ></a-box
-        ><a-box
-          id="recipe_menu_background-2"
-          material="color: #9f8989"
-          geometry="depth: 0.1; height: 1.2; width: 2.2"
-          position="0 0 -0.06"
-          visible="false"
-        ></a-box
-        ><a-box
-          id="recipe_menu_background-3"
-          material="color: #9f8989"
-          geometry="depth: 0.1; height: 1.2; width: 2.2"
-          position="0 0 -0.06"
-          visible="false"
-        ></a-box
-        ><a-box
-          id="recipe_menu_background-4"
-          material="color: #9f8989"
-          geometry="depth: 0.1; height: 1.2; width: 2.2"
-          position="0 0 -0.06"
-          visible="false"
-        ></a-box
-        ><a-box
-          id="recipe_menu_background-5"
-          material="color: #9f8989"
-          geometry="depth: 0.1; height: 1.2; width: 2.2"
-          position="0 0 -0.06"
-          visible="false"
-        ></a-box
-        ><a-box
-          id="recipe_menu_background-6"
-          material="color: #9f8989"
-          geometry="depth: 0.1; height: 1.2; width: 2.2"
-          position="0 0 -0.06"
-          visible="false"
-        ></a-box
-        ><a-box
-          id="recipe_menu_background-7"
-          material="color: #9f8989"
-          geometry="depth: 0.1; height: 1.2; width: 2.2"
-          position="0 0 -0.06"
-          visible="false"
-        ></a-box
-        ><a-box
-          id="recipe_menu_background-8"
-          material="color: #9f8989"
-          geometry="depth: 0.1; height: 1.2; width: 2.2"
-          position="0 0 -0.06"
-          visible="false"
         ></a-box>
         <a-plane
           color="#FFFFFF"
@@ -202,7 +155,7 @@
           width="2"
           heigth="10"
           material=""
-          geometry=""
+          geometry="height: 1.35"
         ></a-plane>
         <a-text
           value="Kies een recept"
@@ -213,7 +166,7 @@
         ></a-text
         ><a-text
           value="Kies een recept"
-          position="0.08225 -0.41206 0"
+          position="0.08 -0.5 0"
           scale=""
           text='width: 1.57; value: Kijk naar de ingredienten lijst om te zien welke ingredienten je nodig hebt en stop de ingredienten in de blauwe schaal."; align: center'
           id="bio_text"
@@ -231,6 +184,11 @@
             material="src: #pancakes"
             mixin="poster"
             position="0 0.0 0.005"
+            ><a-text
+              width="2.23"
+              position="-0.2 -0.3 0"
+              value="Druk op A"
+            ></a-text
           ></a-entity>
         </a-entity>
 
@@ -247,21 +205,28 @@
             material="src: #birthdayCake"
             mixin="poster"
             position="0 0.0 0.005"
+            ><a-text
+              width="2.23"
+              position="-0.2 -0.3 0"
+              value="Druk op B"
+            ></a-text
           ></a-entity>
         </a-entity>
       </a-entity>
-      <!-- END | RECIPE MENU SCREEN -->
-      <!-- RESTART MENU -->
+      <!-- END | RECIPE SELECTION SCREEN -->
+
+      <!-- RESTART SCREEN -->
       <a-entity
         id="restart_menu"
         menu=""
         position="0.694 1.039 -0.163"
         rotation="-45 -69.051 0"
         event-manager=""
+        visible="false"
       >
         <a-entity
           text="align: center; color: white; 
-       value: Opnieuw beginnen \n\n zou je graag opnieuw willen \n beginnen? Druk dan op de \n knop hieronder"
+     value: Opnieuw beginnen \n\n zou je graag opnieuw willen \n beginnen? Druk dan op de \n knop hieronder"
           scale="0.8 0.8 0.8"
           position="0 0.02 0"
         >
@@ -288,72 +253,48 @@
           position="0 0 -0.025"
         ></a-entity
       ></a-entity>
-      <!-- END | RESTART MENU -->
+      <!-- END | RESTART SCREEN -->
+
       <!-- RECIPE LIST -->
-      <a-entity id="recipe_list" position="1.6 1.7 -2" rotation="0 -40 0">
-        <a-box id="recipe_menu_background" material="color: #9f8989" geometry="depth: 0.1; height: 1.8; width: 1.6" position="0 -0.29512 -0.06" visible=""></a-box>
-        <a-plane color="#FFFFFF" opacity="0.5" width="2" heigth="10" material="displacementBias: 0.51; height: NaN; width: 512.07" geometry="width: 1.4; height: 1" position="0 -0.3 0"></a-plane>
-        <a-text value="Voeg deze ingrediënten toe!" position="0.00308 0.44892 0" scale="0.8 0.8 0.8" text="width: 3.74; value: Voeg deze \n ingredienten toe!; align: center" id="title_text"></a-text><a-text value="Voeg deze ingrediënten toe!" position="-0.44556 -0.29945 0.02755" scale="0.8 0.8 0.8" text="width: 3.74; value: 1 Ei \n 1 Pak Bloem \n 1 Pak Melk \n 1 Banaan \n 1 Reep Chocola" id="ingredienten"></a-text>
-        </a-entity>
-        ></a-text>
-        </a-entity>
-
-      </a-entity>
-      <!-- END | RECIPE LIST -->
-      <!-- END | INFORMATION -->
-
-      <!-- CAMERA ENTITY  -->
-      <a-entity id="rig" position="0 0 0" id="camera_entity">
-        <a-camera
-          positon="0 1.6 -2"
-          rotation="-35 0 0"
-          camera=""
-          look-controls=""
-          wasd-controls=""
-          data-aframe-inspector-original-camera=""
-        >
-          <a-cursor
-            id="sight_cursor"
-            raycaster=""
-            position="0 0 -0.2"
-            visible="false"
-            collisionforces="false"
-            material=""
-            cursor=""
-            geometry=""
-          ></a-cursor>
-        </a-camera>
-        <a-entity
-          id="rhand"
-          mixin="touch"
-          hand-controls="hand: right"
-          meta-touch-controls="hand: right"
-          restart-trigger
-        >
-        </a-entity>
-        <a-entity id="lhand" mixin="touch" hand-controls="hand: left">
-        </a-entity>
-      </a-entity>
-      <!-- END | CAMERA ENTITY -->
-      <!-- DEFAULT LIGHTS -->
       <a-entity
-        id="ambient_light"
-        light="color: #BBB; intensity: 0.45; type: ambient"
-        position="-0.04043 1.73926 0.065"
+        id="recipe_list"
+        position="1.6 1.7 -2"
+        rotation="0 -40 0"
+        visible="false"
       >
+        <a-box
+          id="recipe_menu_background"
+          material="color: #9f8989"
+          geometry="depth: 0.1; height: 1.8; width: 1.6"
+          position="0 -0.29512 -0.06"
+          visible=""
+        ></a-box>
+        <a-plane
+          color="#FFFFFF"
+          opacity="0.5"
+          width="2"
+          heigth="10"
+          material="displacementBias: 0.51; height: NaN; width: 512.07"
+          geometry="width: 1.4; height: 1"
+          position="0 -0.3 0"
+        ></a-plane>
+        <a-text
+          value="Voeg deze ingrediënten toe!"
+          position="0.00308 0.44892 0"
+          scale="0.8 0.8 0.8"
+          text="width: 3.74; value: Voeg deze \n ingredienten toe!; align: center"
+          id="title_text"
+        ></a-text
+        ><a-text
+          id="recipe_list_state"
+          value="Voeg deze ingrediënten toe!"
+          position="-0.44556 -0.29945 0.02755"
+          scale="0.8 0.8 0.8"
+          text="width: 3.74; value: 1 Ei \n 1 Pak Bloem \n 1 Pak Melk \n 1 Banaan \n 1 Reep Chocola"
+          id="ingredienten"
+        ></a-text>
       </a-entity>
-      <a-light
-        id="directional_light"
-        type="directional"
-        color="#FFFFFF"
-        intensity="0.6"
-        castshadow="true"
-        position="0.57846 2.07482 0.14666"
-        light=""
-      >
-      </a-light>
-
-      <!-- END | DEFAULT LIGHTS -->
+      <!-- END | INFORMATION -->
       <!-- KITCHEN ENTITIES -->
       <a-entity
         id="kitchen_front"
@@ -381,66 +322,21 @@
       <a-box
         id="table_cover"
         material="height: 255.9; width: 512.02"
-        geometry="depth: 0.1; height: 2.16; width: 1.39"
+        geometry="depth: 0.02; height: 2.16; width: 1.39"
         rotation="90 0 0"
-        position="0.025 0.70 -1.167"
+        position="0.025 0.727 -1.167"
         visible="false"
         static-body
       ></a-box>
-
-      <!-- BORDERS -->
-      <a-entity
-        id="room_edge_left"
-        geometry="primitve: box; depth: 10; height: 2.890"
-        position="-4.065 1.370 0"
-        static-body
-        visible="false"
-      ></a-entity>
-      <a-entity
-        id="room_edge_right"
-        geometry="primitve: box; depth: 10; height: 2.890"
-        position="3.371 1.370 0"
-        static-body
-        visible="false"
-      ></a-entity>
-      <a-entity
-        id="room_edge_front"
-        geometry="primitve: box; width: 8; depth: 0.5; height: 3;"
-        position="-0.072 1.396 -5.288"
-        static-body
-        visible="false"
-      ></a-entity>
-      <a-entity
-        id="room_edge_behind"
-        geometry="primitve: box; width: 8; depth: 0.5; height: 3;"
-        position="-0.072 1.396 4.670"
-        static-body
-        visible="false"
-      ></a-entity>
-      <a-entity
-        id="room_edge_counter_left"
-        geometry="primitve: box; depth: 5; height: 1.2;"
-        position="-3.16 0.224 -3.174"
-        static-body
-        visible="false"
-      ></a-entity>
-      <a-entity
-        id="room_edge_counter_front"
-        geometry="primitve: box; depth: 1; height: 1.2; width: 2.5"
-        position="-1.753 0.248 -4.624"
-        static-body
-        visible="false"
-      ></a-entity>
-
-      <!-- END | BORDERS -->
 
       <!-- BOWL ENTITY -->
       <a-entity
         id="bowl"
         gltf-model="#bowl_model"
+        class="target"
         scale="0.25 0.25 0.25"
         position="0 0.879 -0.36"
-        body="type: static; mass: 9; shape: none"
+        body="type: static; mass: 5; shape: none"
         shape__base="type: box; halfExtents: 0.5 0.5 0.5; offset: 0 -0.75 0;"
         shape__side1="type: box; halfExtents: 0.45 0.01 0.5; offset:0.7 0 0; orientation:0 0 0.3827 0.9239;"
         shape__side2="type: box; halfExtents: 0.45 0.01 0.5; offset:-0.7 0 0; orientation: 0 0 -0.3827 1"
@@ -463,6 +359,8 @@
         rotation="-90 0 0"
         scale="0.0025 0.0025 0.0025"
         shape__main="shape: box; halfExtents: 40 20 10; offset:0 -10 0 "
+        visible="false"
+        text-name="Banaan"
       ></a-entity>
 
       <a-entity
@@ -471,12 +369,10 @@
         class="correct"
         gltf-model="assets/food/egg/scene.gltf"
         scale="0.05 0.05 0.05"
-        original_scale="0.05 0.05 0.05"
-        position="0. 1.5 -0.426"
-        original_position="0. 1.5 -0.426"
+        position="0 1.6 -0.36"
         shape__main="shape: sphere; radius: 1"
-        physics-collider="ignoreSleep: false"
-        debug-prod
+        visible="true"
+        text-name="Ei"
       >
       </a-entity>
 
@@ -488,6 +384,8 @@
         scale="0.01 0.01 0.01"
         position="-0.462 0.973 -0.501"
         shape__main="shape: box; halfExtents: 3.75 10 4.2"
+        visible="false"
+        text-name="Pak Melk"
       >
         ></a-entity
       >
@@ -500,6 +398,7 @@
         scale="0.05 0.05 0.05"
         position="0 0.825 -1.330"
         shape__main="shape: box; offset:0 -0.2 0.2; halfExtents: 1 0.2 2.1"
+        visible="false"
       >
       </a-entity>
 
@@ -512,6 +411,8 @@
         scale="0.1 0.1 0.1"
         position="-0.462 1.005 -1"
         shape__main="shape: box; halfExtents: 0.7 1.4 1; offset:0 -0.2 0"
+        visible="false"
+        text-name="Pak Bloem"
       >
         ></a-entity
       >
@@ -525,8 +426,21 @@
         gltf-model="assets/food/carrot_v2/carrot_v2.gltf"
         scale="0.005 0.005 0.005"
         shape__main="shape:box; halfExtents: 35 5 4; offset: 17 -1 1"
+        visible="false"
       ></a-entity>
 
+      <a-entity
+        id="chocolate"
+        class="correct"
+        mixin="food_mixin"
+        position="-3.119 0.874 0.137"
+        rotation="0 90 0"
+        gltf-model="assets/food/chocolate_bar/scene.gltf"
+        shape__main="shape:box;"
+        scale="0.105 0.105 0.135"
+        visible="false"
+        text-name="Reep Chocola"
+      ></a-entity>
       <!-- END | FOOD ENTITIES -->
       <!-- GROUND LEVEL -->
       <a-box
@@ -540,6 +454,24 @@
         visible="false"
         static-body
       ></a-box>
+
+      <!-- CHOSEN RECEPT -->
+
+      <a-entity id="chosenRecept" visible="false" highlight>
+        <a-plane
+          color="grey"
+          position="0 1.7 -2"
+          width="2.5"
+          heigth="0.5"
+        ></a-plane>
+        <a-text
+          id="chosenReceptText"
+          position="0 1.7 -2"
+          text="align:center"
+          scale="0.5 0.5 0.5"
+        ></a-text>
+      </a-entity>
+      <!-- END | CHOSEN RECEPT -->
     </a-scene>
   </body>
 </html>
