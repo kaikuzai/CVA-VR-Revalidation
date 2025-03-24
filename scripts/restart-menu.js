@@ -3,16 +3,16 @@ AFRAME.registerComponent('restart-trigger', {
       var el = this.el
 
       el.addEventListener('abuttondown', function () {
-        console.log("trigger pushed")
+        var menuScreen = document.querySelector("#recipe_menu")
+        var menuScreenVisible = menuScreen.getAttribute('visible')
         var restartMenu = document.querySelector("#restart_menu")
-        console.log("visiblilty: ", restartMenu.getAttribute('visible'))
         if ( restartMenu.getAttribute('visible') === true) {
-          console.log("visible true scenario");
           restartMenu.setAttribute('visible', false);
         }
-        else if (restartMenu.getAttribute('visible') === false) {
-          console.log("visible false scenario");
+        else if (restartMenu.getAttribute('visible' ) === false && !menuScreenVisible ) {
           restartMenu.setAttribute('visible', true);
+        } else {
+          return; 
         }
       });
 
