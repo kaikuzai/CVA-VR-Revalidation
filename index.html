@@ -26,7 +26,7 @@
       }
 
       window.addEventListener('load', () => {
-        speakInstruction('Wij beginnen vandaag met het bakken van pannekoeken.');
+        // Ik heb dit even uit gezeg moet later weer aan
       });
     </script>
 
@@ -69,6 +69,43 @@
                 var box = el.querySelector('a-box')
                 box.setAttribute('visible', 'true')
             });
+        }
+      });
+
+      AFRAME.registerComponent('recipe-selection', {
+
+      })
+
+      AFRAME.registerComponent('restart-trigger', {
+        init: function () {
+          var el = this.el
+
+          el.addEventListener('abuttondown', function () {
+            console.log("trigger pushed")
+            var restartMenu = document.querySelector("#restart_menu")
+            console.log("visiblilty: ", restartMenu.getAttribute('visible'))
+            if ( restartMenu.getAttribute('visible') === true) {
+              console.log("visible true scenario");
+              restartMenu.setAttribute('visible', false);
+            }
+            else if (restartMenu.getAttribute('visible') === false) {
+              console.log("visible false scenario");
+              restartMenu.setAttribute('visible', true);
+            }
+          });
+
+          el.addEventListener('bbuttondown', function () {
+            var restartMenu = document.querySelector("#restart_menu")
+            if (restartMenu.getAttribute('visible') === true) {
+              console.log("reload should trigger");
+              window.location.reload();
+            }
+            else if (restartMenu.getAttribute('visible') === false) {
+              console.log("Reload shouldn't trigger");
+              return;
+            }
+          });
+
         }
       });
     </script>
@@ -114,24 +151,31 @@
           draggable
           physics-collider
         ></a-mixin>
-        <img id="pancakes" src="https://media.istockphoto.com/id/1071627996/vector/pancakes-with-butter-and-maple-syrup-sweet-on-white-plate.jpg?s=612x612&w=0&k=20&c=dKY-1LxTUAN_VEkTO-hr18UT9HQAtaqjCNOD1DanP8M=" crossorigin="anonymous"/>
-       
-        <img id="birthdayCake" src="https://media.istockphoto.com/id/901911608/vector/birthday-cake-vector-isolated.jpg?s=612x612&w=0&k=20&c=Yh2ULwtHQ6Tfag3kO6kSmA1FYnc7OeQzGz1GldGWBQs=" crossorigin="anonymous"/>
-      
+        <img
+          id="pancakes"
+          src="https://media.istockphoto.com/id/1071627996/vector/pancakes-with-butter-and-maple-syrup-sweet-on-white-plate.jpg?s=612x612&w=0&k=20&c=dKY-1LxTUAN_VEkTO-hr18UT9HQAtaqjCNOD1DanP8M="
+          crossorigin="anonymous"
+        />
+
+        <img
+          id="birthdayCake"
+          src="https://media.istockphoto.com/id/901911608/vector/birthday-cake-vector-isolated.jpg?s=612x612&w=0&k=20&c=Yh2ULwtHQ6Tfag3kO6kSmA1FYnc7OeQzGz1GldGWBQs="
+          crossorigin="anonymous"
+        />
         <a-mixin
-        id="frame"
-        geometry="primitive: plane; width: 0.5783552; height: 0.8192"
-        material="color: white; shader: flat"
-        animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter"
-        animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave"
-       ></a-mixin>
-         <a-mixin
+          id="frame"
+          geometry="primitive: plane; width: 0.55; height: 0.55"
+          material="color: white; shader: flat"
+          animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter"
+          animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave"
+        ></a-mixin>
+        <a-mixin
           id="poster"
-          geometry="primitive: plane; width: 0.544768; height: 0.786432"
+          geometry="primitive: plane; width: 0.55; height: 0.55"
           material="color: white; shader: flat"
           material="shader: flat"
           position="0 0 0.005"
-         ></a-mixin>
+        ></a-mixin>
       </a-assets>
       <!-- END | MIXIN ASSEETS -->
       <!-- END | ASSET MANAGEMENT -->
@@ -146,7 +190,13 @@
             collisionForces="false"
           ></a-cursor>
         </a-camera>
-        <a-entity id="rhand" mixin="touch" hand-controls="hand: right">
+        <a-entity
+          id="rhand"
+          mixin="touch"
+          hand-controls="hand: right"
+          meta-touch-controls="hand: right"
+          restart-trigger
+        >
         </a-entity>
         <a-entity id="lhand" mixin="touch" hand-controls="hand: left">
         </a-entity>
@@ -171,6 +221,125 @@
       </a-light>
 
       <!-- END | DEFAULT LIGHTS -->
+      <!-- INFORMATION -->
+      <!-- RECIPE SELECTION SCREEN -->
+      <a-entity id="recipe_menu" position="0 1.7 -1.5" highlight="">
+        <a-box
+          id="recipe_menu_background"
+          material="color: #9f8989"
+          geometry="depth: 0.1; height: 1.2; width: 2.2"
+          position="0 0 -0.06"
+          visible=""
+        ></a-box>
+        <a-plane
+          color="#FFFFFF"
+          opacity="0.5"
+          width="2"
+          heigth="10"
+          material=""
+          geometry=""
+        ></a-plane>
+        <a-text
+          value="Kies een recept"
+          position="0.00308 0.44892 0"
+          scale="0.8 0.8 0.8"
+          text="align: center"
+          id="title_text"
+        ></a-text
+        ><a-text
+          value="Kies een recept"
+          position="0.08225 -0.41206 0"
+          scale=""
+          text='width: 1.57; value: Kijk naar de ingredienten lijst om te zien welke ingredienten je nodig hebt en stop de ingredienten in de blauwe schaal."; align: center'
+          id="bio_text"
+          visible=""
+        ></a-text>
+        <a-entity
+          id="pancakesButton"
+          position="-0.5 0.055 0"
+          mixin="frame"
+          class="raycastable menu-button"
+          animation__scale="dur: 200; property: scale; startEvents: mouseenter; to: 1.2 1.2 1.2"
+          animation__scale_reverse="dur: 200; property: scale; startEvents: mouseleave; to: 1 1 1"
+        >
+          <a-entity
+            material="src: #pancakes"
+            mixin="poster"
+            position="0 0.0 0.005"
+          ></a-entity>
+        </a-entity>
+
+        <a-entity
+          id="birthdayCakeButton"
+          position="0.5 0.055 0"
+          mixin="frame"
+          class="raycastable menu-button"
+          event-set__click="[object Object]"
+          animation__scale="dur: 200; property: scale; startEvents: mouseenter; to: 1.2 1.2 1.2"
+          animation__scale_reverse="dur: 200; property: scale; startEvents: mouseleave; to: 1 1 1"
+        >
+          <a-entity
+            material="src: #birthdayCake"
+            mixin="poster"
+            position="0 0.0 0.005"
+          ></a-entity>
+        </a-entity>
+      </a-entity>
+      <!-- END |RECIPE SELECTION SCREEN -->
+      <!-- RESTART SCREEN -->
+      <a-entity
+        id="restart_menu"
+        menu=""
+        position="0.694 1.039 -0.163"
+        rotation="-45 -69.051 0"
+        event-manager=""
+        visible="false"
+      >
+        <a-entity
+          text="align: center; color: white; 
+     value: Opnieuw beginnen \n\n zou je graag opnieuw willen \n beginnen? Druk dan op de \n knop hieronder"
+          scale="0.8 0.8 0.8"
+          position="0 0.02 0"
+        >
+        </a-entity>
+
+        <a-entity
+          id="restart_button"
+          static-body
+          restart-trigger
+          button="label: Restart; width: 0.2; toggleable: true"
+          position="0 -0.13 0"
+          geometry="depth: 0.04; height: 0.05; width: 0.3"
+          material="color: #b02d28"
+          pressable="true"
+          ><a-entity
+            position="0 0 0.02"
+            text="align: center; color: white; value: Begin opnieuw"
+            scale="0.75 0.75 0.75"
+          ></a-entity
+        ></a-entity>
+        <a-entity
+          geometry="depth: 0.01; height: 0.4; width: 0.6"
+          material="color: gray"
+          position="0 0 -0.025"
+        ></a-entity
+      ></a-entity>
+
+      <!-- END | RESTART SCREEN -->
+      <!-- RECIPE LIST -->
+       <!-- RECIPE LIST -->
+      <a-entity id="recipe_list" position="1.6 1.7 -2" rotation="0 -40 0">
+        <a-box id="recipe_menu_background" material="color: #9f8989" geometry="depth: 0.1; height: 1.8; width: 1.6" position="0 -0.29512 -0.06" visible=""></a-box>
+        <a-plane color="#FFFFFF" opacity="0.5" width="2" heigth="10" material="displacementBias: 0.51; height: NaN; width: 512.07" geometry="width: 1.4; height: 1" position="0 -0.3 0"></a-plane>
+        <a-text value="Voeg deze ingrediënten toe!" position="0.00308 0.44892 0" scale="0.8 0.8 0.8" text="width: 3.74; value: Voeg deze \n ingredienten toe!; align: center" id="title_text"></a-text><a-text value="Voeg deze ingrediënten toe!" position="-0.44556 -0.29945 0.02755" scale="0.8 0.8 0.8" text="width: 3.74; value: 1 Ei \n 1 Pak Bloem \n 1 Pak Melk \n 1 Banaan \n 1 Reep Chocola" id="ingredienten"></a-text>
+        </a-entity>
+      
+        </a-entity>
+
+      </a-entity>
+      <!-- END | RECIPE LIST -->
+      <!-- END | RECIPE LIST -->
+      <!-- END | INFORMATION -->
       <!-- KITCHEN ENTITIES -->
       <a-entity
         id="kitchen_front"
@@ -194,45 +363,6 @@
         rotation=""
       >
       </a-entity>
-
-      <a-entity position="2 1.6 0">
-        <a-plane
-          rotation="0 -90 0"
-          position="0 0 0"
-          color="grey"
-          width="3"
-          height="1.6"
-          opacity="0.95"
-        ></a-plane>
-        
-        <a-text
-          value="Welkom bij het kookspel!"
-          position="0 0.4 -1.2"
-          rotation="0 -90 0"
-          color="white"
-          scale="0.8 1 1"
-        ></a-text>
-        
-        <a-text
-          value="Kijk naar de ingredienten lijst om te zien welke ingredienten je nodig hebt en stop de ingredienten in de blauwe schaal."
-          position="0 -0.1 -1.2"
-          rotation="0 -90 0"
-          color="white"
-          width="2.6"
-          wrapCount="30"
-        ></a-text>
-      </a-entity>
-  
-    <a-plane
-      rotation="0 -45 0"
-      position="1.5 1.6 -2.3"
-      color="grey"
-      width="1.1"
-      height="1.1"
-      text="value: Ingredienten lijst:\n\n 1. Bloem\n2. Eieren\n3. Melk; align: left; color: white; width: 1; wrapCount: 15"
-      opacity="0.95"
-    ></a-plane>
-    
 
       <a-box
         id="table_cover"
@@ -378,19 +508,6 @@
         visible="false"
         static-body
       ></a-box>
-         <!-- MENU -->
-         <a-entity id="menu" highlight>
-          <a-plane  color="#FFFFFF" opacity="0.5" position="0 1.7 -2" width="2" heigth="10"></a-plane>
-          <a-text value="Kies een recept" position="-0.75 2.3 -2" scale="1 1 1"></a-text>
-          <a-entity id="pancakesButton" position="-0.5 1.7 -2" mixin="frame" class="raycastable menu-button">
-            <a-entity material="src: #pancakes" mixin="poster"></a-entity>
-          </a-entity>
-
-          <a-entity id="birthdayCakeButton" position="0.5 1.7 -2" mixin="frame" class="raycastable menu-button"  event-set__click="visible: false;">
-            <a-entity material="src: #birthdayCake" mixin="poster"></a-entity>
-          </a-entity>
-        </a-entity>
-        <!-- END | MENU -->
     </a-scene>
   </body>
 </html>
