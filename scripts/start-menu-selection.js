@@ -15,6 +15,7 @@ AFRAME.registerComponent("input-listen", {
         chosenReceptText.setAttribute('value', 'Jij hebt gekozen om pannenkoeken te maken!'); 
         setTimeout(() => {
           chosenRecept.setAttribute('visible', false);
+          chosenRecept.setAttribute('data-recept', 'pannenkoek');
           ingedrientsList.setAttribute('visible', true);
           // Turn correct foods visible loop
           correctFood.forEach(function (food) {
@@ -34,6 +35,7 @@ AFRAME.registerComponent("input-listen", {
         menu.setAttribute('visible', false)
         chosenRecept.setAttribute('visible', true);
         chosenReceptText.setAttribute('value', 'Jij hebt gekozen om taart te maken!'); 
+        chosenRecept.setAttribute('data-recept', 'taart');
         setTimeout(() => {
           chosenRecept.setAttribute('visible', false);
           ingedrientsList.setAttribute('visible', true);
