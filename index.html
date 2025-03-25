@@ -294,6 +294,26 @@
           id="ingredienten"
         ></a-text>
       </a-entity>
+      <!-- CHOSEN RECEPT -->
+      <a-entity id="chosenRecept" visible="false" highlight>
+        <a-plane
+          color="grey"
+          position="0 1.7 -2"
+          width="2.5"
+          heigth="0.5"
+        ></a-plane>
+        <a-text
+          id="chosenReceptText"
+          position="0 1.7 -2"
+          text="align:center"
+          scale="0.5 0.5 0.5"
+        ></a-text>
+      </a-entity>
+      <!-- END | CHOSEN RECEPT -->
+      <!-- START AGAIN LOOK SCREEN -->
+
+      <!-- END | START AGAIN LOOK SCREEN -->
+
       <!-- END | INFORMATION -->
       <!-- KITCHEN ENTITIES -->
       <a-entity
@@ -481,24 +501,6 @@
         visible="false"
         static-body
       ></a-box>
-
-      <!-- CHOSEN RECEPT -->
-
-      <a-entity id="chosenRecept" visible="false" highlight>
-        <a-plane
-          color="grey"
-          position="0 1.7 -2"
-          width="2.5"
-          heigth="0.5"
-        ></a-plane>
-        <a-text
-          id="chosenReceptText"
-          position="0 1.7 -2"
-          text="align:center"
-          scale="0.5 0.5 0.5"
-        ></a-text>
-      </a-entity>
-      <!-- END | CHOSEN RECEPT -->
     </a-scene>
   </body>
 </html>
