@@ -284,6 +284,25 @@
           id="ingredienten"
         ></a-text>
       </a-entity>
+
+
+      <!-- Recipe finished -->
+      <a-entity id="recipe_finished" correctIngredients="0" visible="false">
+        <a-plane
+          color="grey"
+          position="0 1.7 -2"
+          width="2"
+          height="0.25"
+        ></a-plane>
+        <a-text
+          id="recipe_finished_text"
+          position="0 1.7 -2"
+          text="align:center"
+          scale="0.5 0.5 0.5"
+          value="Gefeliciteerd, je bent klaar!"
+        ></a-text>
+        </a-entity>
+
       <!-- CHOSEN RECEPT -->
       <a-entity id="chosenRecept" visible="false" highlight>
         <a-plane
@@ -303,6 +322,7 @@
       <!-- START AGAIN LOOK SCREEN -->
 
       <!-- END | START AGAIN LOOK SCREEN -->
+
 
       <!-- END | INFORMATION -->
       <!-- KITCHEN ENTITIES -->
@@ -470,6 +490,7 @@
         id="chocolate"
         class="correct"
         mixin="food_mixin"
+
         position="-0.614 0.850 0.211"
         rotation="0 90 0"
         gltf-model="assets/food/chocolate_bar/scene.gltf"
@@ -478,6 +499,25 @@
         visible="true"
         text-name="Reep Chocola"
       ></a-entity>
+
+      <a-entity
+      id="pannenkoek"
+      position="0.040 0.755 -0.657"
+      gltf-model="assets/food/pancakes/scene.gltf"
+      shape__main="shape: box;"
+      scale="2 2 2"
+      visible="true"
+    ></a-entity>
+
+      <a-entity
+      id="taart"
+      position="0.040 0.755 -0.657"
+      gltf-model="assets/food/birthday_cake/scene.gltf"
+      shape__main="shape: box;"
+      scale="2 2 2"
+      visible="false"
+    ></a-entity>
+
       <!-- END | FOOD ENTITIES -->
       <!-- GROUND LEVEL -->
       <a-box
