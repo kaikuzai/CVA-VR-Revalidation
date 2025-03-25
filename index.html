@@ -14,6 +14,7 @@
     <script src="scripts/start-menu-selection.js"></script>
     <script src="scripts/bowl-interaction.js"></script>
     <script src="scripts/restart-look.js"></script>
+    <script src="scripts/chose-recipe-look.js"></script>
     <!-- END | IMPORTS -->
   </head>
   <body>
@@ -187,7 +188,9 @@
           class="raycastable menu-button"
           animation__scale="dur: 200; property: scale; startEvents: mouseenter; to: 1.2 1.2 1.2"
           animation__scale_reverse="dur: 200; property: scale; startEvents: mouseleave; to: 1 1 1"
-        >
+          chose-recipe-look="entityId: #pancakesButton"
+          event-set__chose-recept="_event: click; chosen: pancakes"
+               >
           <a-entity
             material="src: #pancakes"
             mixin="poster"
@@ -205,9 +208,10 @@
           position="0.5 0.055 0"
           mixin="frame"
           class="raycastable menu-button"
-          event-set__click="[object Object]"
           animation__scale="dur: 200; property: scale; startEvents: mouseenter; to: 1.2 1.2 1.2"
           animation__scale_reverse="dur: 200; property: scale; startEvents: mouseleave; to: 1 1 1"
+          chose-recipe-look="entityId: #birthdayCakeButton"
+          event-set__chose-recept="_event: click; chosen: cake"
         >
           <a-entity
             material="src: #birthdayCake"
@@ -303,8 +307,9 @@
       </a-entity>
 
       <!-- CHOSEN RECEPT -->
-      <a-entity id="chosenRecept" visible="false" highlight>
+      <a-entity id="chosenRecept" visible="false">
         <a-plane
+        id="planeRecept"
           color="grey"
           position="0 1.7 -2"
           width="2.5"
