@@ -16,7 +16,10 @@
       <!-- ASSET MANAGEMENT -->
       <a-assets>
         <!-- GLTF ASSETS -->
-        <!-- GLTF ASSETS -->
+        <a-asset-item
+          id="cart_model"
+          src="assets/environment/kitchen_cart/scene.gltf"
+        ></a-asset-item>
         <a-asset-item
           id="kitchen_model"
           src="assets/cartoon_kitchen_interior/scene.gltf"
@@ -94,40 +97,33 @@
       >
 
       <a-entity
-        id="menu"
-        menu=""
-        position="0 1.3 -0.7"
-        rotation="-45 0 0"
-        event-manager=""
+        id="kitchen_cart"
+        gltf-model="#cart_model"
+        position="-1.378 0.012 0.05"
+        rotation="0 270 0"
+        scaling="0.8 0.8 0.8"
       >
-        <a-entity
-          text="align: center; color: white; 
-          value: Opnieuw beginnen \n\n zou je graag opnieuw willen \n beginnen? Druk dan op de \n knop hieronder"
-          scale="0.8 0.8 0.8"
-          position="0 0.02 0"
+        <a-box
+          id="top_tray"
+          height="0.1"
+          width="0.680"
+          depth="0.470"
+          position="-0.021 0.98 0"
+          body="type: static"
+          visible="false"
         >
-        </a-entity>
 
-        <a-entity
-          id="restartButton"
-          static-body
-          button="label: Restart; width: 0.2; toggleable: true"
-          position="0 -0.13 0"
-          geometry="depth: 0.04; height: 0.05; width: 0.3"
-          material="color: #b02d28"
-          pressable="true"
-          ><a-entity
-            position="0 0 0.02"
-            text="align: center; color: white; value: Begin opnieuw"
-            scale="0.75 0.75 0.75"
-          ></a-entity
-        ></a-entity>
-        <a-entity
-          geometry="depth: 0.01; height: 0.4; width: 0.6"
-          material="color: gray"
-          position="0 0 -0.025"
-        ></a-entity
-      ></a-entity>
+        </a-box>
+        <a-box
+        id="bottom_tray"
+        height="0.1"
+        width="0.680"
+        depth="0.470"
+        position="-0.021 0.4508 0"
+        body="type: static"
+        visible="false"
+      >
+      </a-entity>
 
       <!-- TEST CUBE -->
       <a-entity
@@ -137,16 +133,6 @@
         position="2 1.8 -1.44"
         material="color: red"
       ></a-entity>
-
-      <a-box
-        id="table_cover"
-        material="height: 255.9; width: 512.02"
-        geometry="depth: 0.02; height: 2.16; width: 1.39"
-        rotation="90 0 0"
-        position="0.025 0.727 -1.167"
-        visible="false"
-        static-body
-      ></a-box>
 
       <!-- GROUND LEVEL -->
       <a-box
