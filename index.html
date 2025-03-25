@@ -12,8 +12,8 @@
     <script src="scripts/sound-assistance.js"></script>
     <script src="scripts/hand-controls.js"></script>
     <script src="scripts/start-menu-selection.js"></script>
-    <script src="scripts/restart-menu.js"></script>
     <script src="scripts/bowl-interaction.js"></script>
+    <script src="scripts/restart-look.js"></script>
     <!-- END | IMPORTS -->
   </head>
   <body>
@@ -98,13 +98,21 @@
       <!-- CAMERA ENTITY  -->
       <a-entity id="camera_entity">
         <a-camera positon="0 1.6 0">
-          <a-cursor
-            id="sight_cursor"
-            raycaster="showLine: false"
-            position="0 0 -0.2"
-            visible="false"
-            collisionForces="false"
-          ></a-cursor>
+          <a-entity
+            cursor="fuse: true; fuseTimeout: 1500"
+            position="0 0 -0.4"
+            geometry="primitive: sphere; radius: 0.005"
+            material="color: #000000; shader: flat; opacity: 0.5"
+          >
+            <a-animation
+              attribute="scale"
+              to="3 3 3"
+              dur="1500"
+              begin="cursor-fusing"
+              fill="backwards"
+              easing="linear"
+            ></a-animation>
+          </a-entity>
         </a-camera>
 
         <a-entity
@@ -217,42 +225,24 @@
 
       <!-- RESTART SCREEN -->
       <a-entity
-        id="restart_menu"
-        menu=""
-        position="0.694 1.039 -0.163"
-        rotation="-45 -69.051 0"
-        event-manager=""
-        visible="false"
+        id="restart_text"
+        text="align: center; color: white; width: 1.5; 
+     value: Blijf hier kijken om \n opnieuw te \n beginnen "
+        scale="1 1 1"
+        position="1.285 1.120 -0.892"
+        rotation="0 -40 0"
       >
         <a-entity
-          text="align: center; color: white; 
-     value: Opnieuw beginnen \n\n zou je graag opnieuw willen \n beginnen? Druk dan op de \n knop hieronder"
-          scale="0.8 0.8 0.8"
-          position="0 0.02 0"
-        >
-        </a-entity>
-
-        <a-entity
-          id="restart_button"
-          static-body
-          restart-trigger
-          button="label: Restart; width: 0.2; toggleable: true"
-          position="0 -0.13 0"
-          geometry="depth: 0.04; height: 0.05; width: 0.3"
-          material="color: #b02d28"
-          pressable="true"
-          ><a-entity
-            position="0 0 0.02"
-            text="align: center; color: white; value: Begin opnieuw"
-            scale="0.75 0.75 0.75"
-          ></a-entity
+          id="sphere"
+          geometry="primitive: circle; radius: 0.2"
+          position="0 0.007 -0.016"
+          material="color: green"
+          animation__scale="property: scale; to: 1.5 1.5 1.5; dur: 1000; startEvents: mouseenter"
+          animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave"
+          event-set__turn-red="_event: click; material.color: red"
+          restart-look="entityId: #sphere"
         ></a-entity>
-        <a-entity
-          geometry="depth: 0.01; height: 0.4; width: 0.6"
-          material="color: gray"
-          position="0 0 -0.025"
-        ></a-entity
-      ></a-entity>
+      </a-entity>
       <!-- END | RESTART SCREEN -->
 
       <!-- RECIPE LIST -->
