@@ -54,8 +54,10 @@ AFRAME.registerComponent("input-listen", {
       
       el.addEventListener("triggerdown", function (e) {
         console.log("triggerdown", e.target.id);
+       if(ingedrientsList.getAttribute('visible') === false){
           startMenu.setAttribute('visible', false);
           menu.setAttribute('visible', true)
+       }
       });
 
     }});
