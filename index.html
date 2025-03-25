@@ -12,8 +12,8 @@
     <script src="scripts/sound-assistance.js"></script>
     <script src="scripts/hand-controls.js"></script>
     <script src="scripts/start-menu-selection.js"></script>
-    <script src="scripts/restart-menu.js"></script>
     <script src="scripts/bowl-interaction.js"></script>
+    <script src="scripts/restart-look.js"></script>
     <!-- END | IMPORTS -->
   </head>
   <body>
@@ -98,13 +98,21 @@
       <!-- CAMERA ENTITY  -->
       <a-entity id="camera_entity">
         <a-camera positon="0 1.6 0">
-          <a-cursor
-            id="sight_cursor"
-            raycaster="showLine: false"
-            position="0 0 -0.2"
-            visible="false"
-            collisionForces="false"
-          ></a-cursor>
+          <a-entity
+            cursor="fuse: true; fuseTimeout: 1500"
+            position="0 0 -0.4"
+            geometry="primitive: sphere; radius: 0.005"
+            material="color: #000000; shader: flat; opacity: 0.5"
+          >
+            <a-animation
+              attribute="scale"
+              to="3 3 3"
+              dur="1500"
+              begin="cursor-fusing"
+              fill="backwards"
+              easing="linear"
+            ></a-animation>
+          </a-entity>
         </a-camera>
 
         <a-entity
@@ -217,42 +225,24 @@
 
       <!-- RESTART SCREEN -->
       <a-entity
-        id="restart_menu"
-        menu=""
-        position="0.694 1.039 -0.163"
-        rotation="-45 -69.051 0"
-        event-manager=""
-        visible="false"
+        id="restart_text"
+        text="align: center; color: white; width: 1.5; 
+     value: Blijf hier kijken om \n opnieuw te \n beginnen "
+        scale="1 1 1"
+        position="1.285 1.120 -0.892"
+        rotation="0 -40 0"
       >
         <a-entity
-          text="align: center; color: white; 
-     value: Opnieuw beginnen \n\n zou je graag opnieuw willen \n beginnen? Druk dan op de \n knop hieronder"
-          scale="0.8 0.8 0.8"
-          position="0 0.02 0"
-        >
-        </a-entity>
-
-        <a-entity
-          id="restart_button"
-          static-body
-          restart-trigger
-          button="label: Restart; width: 0.2; toggleable: true"
-          position="0 -0.13 0"
-          geometry="depth: 0.04; height: 0.05; width: 0.3"
-          material="color: #b02d28"
-          pressable="true"
-          ><a-entity
-            position="0 0 0.02"
-            text="align: center; color: white; value: Begin opnieuw"
-            scale="0.75 0.75 0.75"
-          ></a-entity
+          id="sphere"
+          geometry="primitive: circle; radius: 0.2"
+          position="0 0.007 -0.016"
+          material="color: green"
+          animation__scale="property: scale; to: 1.5 1.5 1.5; dur: 1000; startEvents: mouseenter"
+          animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave"
+          event-set__turn-red="_event: click; material.color: red"
+          restart-look="entityId: #sphere"
         ></a-entity>
-        <a-entity
-          geometry="depth: 0.01; height: 0.4; width: 0.6"
-          material="color: gray"
-          position="0 0 -0.025"
-        ></a-entity
-      ></a-entity>
+      </a-entity>
       <!-- END | RESTART SCREEN -->
 
       <!-- RECIPE LIST -->
@@ -295,6 +285,7 @@
         ></a-text>
       </a-entity>
 
+
       <!-- Recipe finished -->
       <a-entity id="recipe_finished" correctIngredients="0" visible="false">
         <a-plane
@@ -311,6 +302,27 @@
           value="Gefeliciteerd, je bent klaar!"
         ></a-text>
         </a-entity>
+
+      <!-- CHOSEN RECEPT -->
+      <a-entity id="chosenRecept" visible="false" highlight>
+        <a-plane
+          color="grey"
+          position="0 1.7 -2"
+          width="2.5"
+          heigth="0.5"
+        ></a-plane>
+        <a-text
+          id="chosenReceptText"
+          position="0 1.7 -2"
+          text="align:center"
+          scale="0.5 0.5 0.5"
+        ></a-text>
+      </a-entity>
+      <!-- END | CHOSEN RECEPT -->
+      <!-- START AGAIN LOOK SCREEN -->
+
+      <!-- END | START AGAIN LOOK SCREEN -->
+
 
       <!-- END | INFORMATION -->
       <!-- KITCHEN ENTITIES -->
@@ -339,17 +351,37 @@
       <a-entity
         id="kitchen_cart"
         gltf-model="#cart_model"
-        position="-1.378 0.012 0.05"
+        position="-0.724 0.012 0.291"
         rotation="0 270 0"
+        scale="1 0.7 1"
       >
+        <a-box
+          id="top_tray"
+          height="0.1"
+          width="0.680"
+          depth="0.470"
+          position="-0.021 0.98 0"
+          body="type: static"
+          visible="false"
+        >
+        </a-box>
+        <a-box
+          id="bottom_tray"
+          height="0.1"
+          width="0.680"
+          depth="0.470"
+          position="-0.021 0.4508 0"
+          body="type: static"
+          visible="false"
+        ></a-box>
       </a-entity>
 
       <a-box
         id="table_cover"
         material="height: 255.9; width: 512.02"
-        geometry="depth: 0.02; height: 2.16; width: 1.39"
+        geometry="depth: 0.1; height: 2.16; width: 1.39"
         rotation="90 0 0"
-        position="0.025 0.727 -1.167"
+        position="0.025 0.693 -1.167"
         visible="false"
         static-body
       ></a-box>
@@ -359,8 +391,8 @@
         id="bowl"
         gltf-model="#bowl_model"
         class="target"
-        scale="0.25 0.25 0.25"
-        position="0 0.879 -0.36"
+        scale="0.125 0.125 0.125"
+        position="0 0.8 -0.36"
         body="type: static; mass: 5; shape: none"
         shape__base="type: box; halfExtents: 0.5 0.5 0.5; offset: 0 -0.75 0;"
         shape__side1="type: box; halfExtents: 0.45 0.01 0.5; offset:0.7 0 0; orientation:0 0 0.3827 0.9239;"
@@ -380,9 +412,9 @@
         mixin="food_mixin"
         class="correct"
         gltf-model="assets/food/banana_v3/banana_v3.gltf"
-        position="0.545 0.860 -0.784"
+        position="0.374 0.771 -0.363"
         rotation="-90 0 0"
-        scale="0.0025 0.0025 0.0025"
+        scale="0.0018 0.0018 0.0018"
         shape__main="shape: box; halfExtents: 40 20 10; offset:0 -10 0 "
         visible="false"
         text-name="Banaan"
@@ -394,7 +426,7 @@
         class="correct"
         gltf-model="assets/food/egg/scene.gltf"
         scale="0.05 0.05 0.05"
-        position="0.45 0.80 -0.50"
+        position="0.236 0.771 -0.575"
         shape__main="shape: sphere; radius: 1"
         visible="false"
         text-name="Ei"
@@ -407,7 +439,7 @@
         class="correct"
         gltf-model="assets/food/milk_v3/scene_v2.gltf"
         scale="0.01 0.01 0.01"
-        position="-0.462 0.973 -0.501"
+        position="-0.427 0.843 -0.311"
         shape__main="shape: box; halfExtents: 3.75 10 4.2"
         visible="false"
         text-name="Pak Melk"
@@ -421,7 +453,7 @@
         class="incorrect"
         gltf-model="assets/food/salmon/scene.gltf"
         scale="0.05 0.05 0.05"
-        position="0 0.825 -1.330"
+        position="0.572 0.753 -0.507"
         shape__main="shape: box; offset:0 -0.2 0.2; halfExtents: 1 0.2 2.1"
         visible="false"
       >
@@ -433,8 +465,8 @@
         class="correct"
         mixin="food_item_box"
         gltf-model="assets/food/flour_v3/flour_v3.gltf"
-        scale="0.1 0.1 0.1"
-        position="-0.462 1.005 -1"
+        scale="0.05 0.05 0.05"
+        position="-0.184 0.823 -0.627"
         shape__main="shape: box; halfExtents: 0.7 1.4 1; offset:0 -0.2 0"
         visible="false"
         text-name="Pak Bloem"
@@ -446,10 +478,10 @@
         id="carrot"
         class="incorrect"
         mixin="food_mixin"
-        position="0.264 0.885 -1.095"
+        position="-0.358 0.829 -0.469"
         rotation="0 -45 0"
         gltf-model="assets/food/carrot_v2/carrot_v2.gltf"
-        scale="0.005 0.005 0.005"
+        scale="0.0025 0.0025 0.00255"
         shape__main="shape:box; halfExtents: 35 5 4; offset: 17 -1 1"
         visible="false"
       ></a-entity>
@@ -458,12 +490,13 @@
         id="chocolate"
         class="correct"
         mixin="food_mixin"
-        position="-0.262 1.005 -1"
+
+        position="-0.614 0.850 0.211"
         rotation="0 90 0"
         gltf-model="assets/food/chocolate_bar/scene.gltf"
-        shape__main="shape: box; halfExtents: 0.7 1.4 1; offset:0 -0.2 0"
-        scale="0.105 0.105 0.135"
-        visible="false"
+        shape__main="type: static; shape:box; halfExtents: 1.6 0.4 0.7"
+        scale="0.105 0.105 0.105"
+        visible="true"
         text-name="Reep Chocola"
       ></a-entity>
 
@@ -492,30 +525,12 @@
         width="10"
         depth="10"
         scale="1 1 1"
-        height="0.01"
+        height="2"
         color="#FFFFFF"
-        position="0 0.01 0"
+        position="0 -0.971 0"
         visible="false"
         static-body
       ></a-box>
-
-      <!-- CHOSEN RECEPT -->
-
-      <a-entity id="chosenRecept" visible="false" highlight>
-        <a-plane
-          color="grey"
-          position="0 1.7 -2"
-          width="2.5"
-          heigth="0.5"
-        ></a-plane>
-        <a-text
-          id="chosenReceptText"
-          position="0 1.7 -2"
-          text="align:center"
-          scale="0.5 0.5 0.5"
-        ></a-text>
-      </a-entity>
-      <!-- END | CHOSEN RECEPT -->
     </a-scene>
   </body>
 </html>
