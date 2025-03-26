@@ -8,6 +8,7 @@ AFRAME.registerComponent('collision-listener', {
     this.el.addEventListener('collide', (event) => {
       const bowlHitbox = event.detail.body.el; // bowl plane
       const otherEntity = event.target; // ingredient
+      const incorrectFood = document.querySelectorAll(".incorrect");
       // checks if an ingredient collides with the bowl plane
       if (otherEntity && bowlHitbox.id === 'bowl' && !bowlCollided) {
         bowlCollided = true;
@@ -40,7 +41,9 @@ AFRAME.registerComponent('collision-listener', {
               correct.setAttribute('visible', true);
               recipeList.setAttribute('visible', false); // turns recipe list foetsie
               bowl.setAttribute('visible', false); // turns bowl foetsie
-
+              incorrectFood.forEach(function (food) {
+                food.setAttribute('visible', false);
+                });
               let chosenRecepi = document.querySelector('#chosenRecept');
               let finished_recepi = chosenRecepi.getAttribute('data-recept');
 

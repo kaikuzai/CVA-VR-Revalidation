@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/aframe-event-set-component@^4.1.1/dist/aframe-event-set-component.min.js"></script>
     <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
     <script src="https://unpkg.com/aframe-environment-component@1.3.2/dist/aframe-environment-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@latest/dist/aframe-extras.min.js"></script>
     <!-- IMPORTS SCRIPTS -->
     <script src="scripts/sound-assistance.js"></script>
     <script src="scripts/hand-controls.js"></script>
@@ -108,7 +109,7 @@
       <!-- END | MIXIN ASSEETS -->
       <!-- END | ASSET MANAGEMENT -->
       <!-- CAMERA ENTITY  -->
-      <a-entity id="camera_entity">
+      <a-entity id="camera_entity" movement-controls>
         <a-camera positon="0 1.6 0">
           <a-entity
             cursor="fuse: true; fuseTimeout: 1500"
