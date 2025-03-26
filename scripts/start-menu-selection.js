@@ -3,6 +3,8 @@ AFRAME.registerComponent("input-listen", {
       let el = this.el;
       const ingedrientsList = document.querySelector("#recipe_list");
       const menu = document.querySelector("#recipe_menu");
+      const startMenu = document.querySelector("#start_menu");
+      const informationMenu = document.querySelector("#information_menu");
       const chosenRecept = document.querySelector("#chosenRecept");
       const chosenReceptText = document.querySelector("#chosenReceptText");
       const correctFood = document.querySelectorAll(".correct");
@@ -52,4 +54,12 @@ AFRAME.registerComponent("input-listen", {
         }, 2000);
       });
       
+      el.addEventListener("triggerdown", function (e) {
+        console.log("triggerdown", e.target.id);
+       if(ingedrientsList.getAttribute('visible') === false){
+          startMenu.setAttribute('visible', false);
+          menu.setAttribute('visible', true)
+       }
+      });
+
     }});
