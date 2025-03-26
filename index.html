@@ -48,16 +48,16 @@
         />
 
         <img
-        id="triggerknop"
-        src="assets/images/triggerknop.jpeg"
-        crossorigin="anonymous"
-      />
+          id="triggerknop"
+          src="assets/images/triggerknop.jpeg"
+          crossorigin="anonymous"
+        />
 
-      <img
-        id="triggerknopPressed"
-        src="assets/images/triggerknop ingedrukt.jpeg"
-        crossorigin="anonymous"
-      />
+        <img
+          id="triggerknopPressed"
+          src="assets/images/triggerknop ingedrukt.jpeg"
+          crossorigin="anonymous"
+        />
         <!-- END| IMAGES -->
         <!-- MIXIN ASSETS -->
         <a-mixin
@@ -136,7 +136,12 @@
           input-listen
         >
         </a-entity>
-        <a-entity id="lhand" mixin="touch" hand-controls="hand: left" input-listen>
+        <a-entity
+          id="lhand"
+          mixin="touch"
+          hand-controls="hand: left"
+          input-listen
+        >
         </a-entity>
       </a-entity>
       <!-- END | CAMERA ENTITY -->
@@ -161,51 +166,58 @@
       <!-- END | DEFAULT LIGHTS -->
       <!--  START MENU-->
       <a-entity id="start_menu" position="0 1.7 -1.5" visible="true">
-      <a-box
-      id="start_menu_background"
-      color="#ead7b1" 
-      opacity="0.8"
-      geometry="depth: 0.1; height: 1.5; width: 2.2"
-      position="0 0 -0.76"
-      ></a-box>
+        <a-box
+          id="start_menu_background"
+          color="#ead7b1"
+          opacity="0.8"
+          geometry="depth: 0.1; height: 1.5; width: 2.2"
+          position="0 0 -0.76"
+        ></a-box>
         <a-text
           value="Welkom in de CVA revalidatie keuken!"
           position="0.00308 0.4 -0.7"
           scale="0.5 0.5 0.5"
           text="align: center"
         ></a-text>
-       <a-image src="#triggerknop" position="-0.35 -0.05 -0.7" scale="0.5 0.5 0.5"></a-image>
-       <a-image src="#triggerknopPressed" position=" 0.35 -0.05 -0.7" scale="0.5 0.5 0.5"></a-image>
+        <a-image
+          src="#triggerknop"
+          position="-0.35 -0.05 -0.7"
+          scale="0.5 0.5 0.5"
+        ></a-image>
+        <a-image
+          src="#triggerknopPressed"
+          position=" 0.35 -0.05 -0.7"
+          scale="0.5 0.5 0.5"
+        ></a-image>
         <a-text
-        value="Druk op de achterste knop dat weergeven is in de foto deze heb je nodig om het spel te beginnen en te navigeren door het menu"
-        position="0.00308 -0.5 -0.7"
-        scale="0.3 0.3 0.3"
-        text="align: center"
-        opacity="1.2"
-      ></a-text>
+          value="Druk op de achterste knop dat weergeven is in de foto deze heb je nodig om het spel te beginnen en te navigeren door het menu"
+          position="0.00308 -0.5 -0.7"
+          scale="0.3 0.3 0.3"
+          text="align: center"
+          opacity="1.2"
+        ></a-text>
       </a-entity>
       <!-- END | START MENU-->
       <!-- INFORMATION -->
       <a-entity id="information_menu" position="0 1.7 -1.5" visible="false">
         <a-box
-        id="information_menu_background"
-        color="#ead7b1" 
-        opacity="0.8"
-        geometry="depth: 0.1; height: 1.8; width: 2.2"
-        position="0 0 -0.76"
+          id="information_menu_background"
+          color="#ead7b1"
+          opacity="0.8"
+          geometry="depth: 0.1; height: 1.8; width: 2.2"
+          position="0 0 -0.76"
         ></a-box>
-          <a-text
-            value="Uitleg over het spel"
-            position="0.00308 0.75 -0.7"
-            scale="0.5 0.5 0.5"
-            text="align: center"
-          ></a-text>
-          <a-text
+        <a-text
+          value="Uitleg over het spel"
+          position="0.00308 0.75 -0.7"
+          scale="0.5 0.5 0.5"
+          text="align: center"
+        ></a-text>
+        <a-text
           value="Dit spel is bedoeld voor mensen met een CVA die op een leuke manier willen revalideren. Zorg ervoor dat je dit spel zittend speelt!"
           position="0.00308 0.5 -0.7"
           scale="0.3 0.3 0.3"
           text="align: center"
-  
         ></a-text>
         <a-text
           value="Je zal straks een recept kunnen kiezen waarbij je vervolgens een ingredientenlijst te zien krijgt. Zoek de benodigde ingredienten door vooral goed om je heen te kijken. Heb je het ingredient gevonden? Stop deze dan in de blauwe schaal en deze wordt van je ingredientenlijst afgekruist. Als je alle ingrediënten hebt gevonden, ben je klaar met je recept!"
@@ -218,26 +230,22 @@
           position="0.00308 -0.35 -0.7"
           scale="0.3 0.3 0.3"
           text="align: center"
-  
         ></a-text>
         <a-text
-        value=" Het navigeren in de menu’s kun je doen door de linker en rechter trigger van je controller te gebruiken."
-        position="0.00308 -0.55 -0.7"
-        scale="0.3 0.3 0.3"
-        text="align: center"
-
-      ></a-text>
-      <a-text
-        value="Klik op de trigger als je verder wilt gaan."
-        position="0.00308 -0.75 -0.7"
-        scale="0.35 0.35 0.35"
-        text="align: center"
-        opacity="1.2"
-      ></a-text>
-      
-       
-        </a-entity>
-        <!-- END | INFORMATION-->
+          value=" Het navigeren in de menu’s kun je doen door de linker en rechter trigger van je controller te gebruiken."
+          position="0.00308 -0.55 -0.7"
+          scale="0.3 0.3 0.3"
+          text="align: center"
+        ></a-text>
+        <a-text
+          value="Klik op de trigger als je verder wilt gaan."
+          position="0.00308 -0.75 -0.7"
+          scale="0.35 0.35 0.35"
+          text="align: center"
+          opacity="1.2"
+        ></a-text>
+      </a-entity>
+      <!-- END | INFORMATION-->
       <!-- RECIPE SELECTION SCREEN -->
       <a-entity id="recipe_menu" position="0 1.7 -1.5" visible="false">
         <a-box
@@ -248,7 +256,7 @@
           visible=""
         ></a-box>
         <a-plane
-        position="0 0 -0.6"
+          position="0 0 -0.6"
           color="#FFFFFF"
           opacity="0.5"
           width="2"
@@ -270,21 +278,20 @@
           class="raycastable menu-button"
           animation__scale="dur: 200; property: scale; startEvents: mouseenter; to: 1.2 1.2 1.2"
           animation__scale_reverse="dur: 200; property: scale; startEvents: mouseleave; to: 1 1 1"
-               >
+        >
           <a-entity
             material="src: #pancakes"
             mixin="poster"
             position="0 0.0 0.005"
-            ></a-entity>
-            <a-text
-              width="1.5"
-              scale="1.05 1.05 1.05 "
-              position="0 -0.4 0"
-              value="Druk op linker achterste knop"
-              text="align: center;"
-              opacity="1.5"
-            ></a-text
-          >
+          ></a-entity>
+          <a-text
+            width="1.5"
+            scale="1.05 1.05 1.05 "
+            position="0 -0.4 0"
+            value="Druk op linker achterste knop"
+            text="align: center;"
+            opacity="1.5"
+          ></a-text>
         </a-entity>
 
         <a-entity
@@ -394,7 +401,7 @@
       <!-- CHOSEN RECEPT -->
       <a-entity id="chosenRecept" visible="false" highlight>
         <a-plane
-        id="planeRecept"
+          id="planeRecept"
           color="grey"
           position="0 1.7 -2"
           width="2.5"
@@ -570,7 +577,7 @@
         rotation="0 -45 0"
         gltf-model="assets/food/carrot_v2/carrot_v2.gltf"
         scale="0.0025 0.0025 0.00255"
-        shape__main="shape:box; halfExtents: 35 5 4; offset: 17 -1 1"
+        shape__main="shape:box; halfExtents: 35 16 14; offset: 17 -1 1"
         visible="false"
       ></a-entity>
 
