@@ -14,6 +14,7 @@
     <script src="scripts/start-menu-selection.js"></script>
     <script src="scripts/bowl-interaction.js"></script>
     <script src="scripts/restart-look.js"></script>
+    <script src="scripts/adjust-position.js"></script>
     <!-- END | IMPORTS -->
   </head>
   <body>
@@ -64,6 +65,7 @@
           id="touch"
           physics-collider
           phase-shift
+          height-adjustment
           collision-filter="collisionForces: false"
           static-body="shape: sphere; sphereRadius: 0.02"
           super-hands="colliderEvent: collisions;
@@ -245,6 +247,59 @@
           opacity="1.2"
         ></a-text>
       </a-entity>
+      <a-entity
+        id="proximity_adjustment_screen"
+        position="0 1.7 -1.5"
+        visible="false"
+        ><a-box
+          id="background"
+          color="#ead7b1"
+          opacity="0.8"
+          geometry="depth: 0.1; height: 1.5; width: 2.2"
+          position="0 0 -0.76"
+          material=""
+        ></a-box
+        ><a-text
+          value="Stel hier in hoe dichtbij de tafel je zit!"
+          position="0.00308 0.4 -0.7"
+          scale="0.5 0.5 0.5"
+          text="align: center"
+        ></a-text
+        ><a-text
+          value="Stel het in met je rechter controller: \n A: dichterbij \n B: verderweg"
+          position="0.00308 -0.5 -0.7"
+          scale="0.3 0.3 0.3"
+          text="align: center"
+          opacity="1.2"
+        ></a-text
+      ></a-entity>
+      <a-entity
+        id="height_adjustment_screen"
+        position="0 1.7 -1.5"
+        visible="false"
+        ><a-box
+          id="background"
+          color="#ead7b1"
+          opacity="0.8"
+          geometry="depth: 0.1; height: 1.5; width: 2.2"
+          position="0 0 -0.76"
+          material=""
+        ></a-box
+        ><a-text
+          value="Stel hier in hoe hoog je zit"
+          position="0.00308 0.4 -0.7"
+          scale="0.5 0.5 0.5"
+          text="align: center"
+        ></a-text
+        ><a-text
+          value="Stel het in met je rechter controller: \n B: hoger \n A: lager"
+          position="0.00308 -0.5 -0.7"
+          scale="0.3 0.3 0.3"
+          text="align: center"
+          opacity="1.2"
+        ></a-text
+      ></a-entity>
+
       <!-- END | INFORMATION-->
       <!-- RECIPE SELECTION SCREEN -->
       <a-entity id="recipe_menu" position="0 1.7 -1.5" visible="false">

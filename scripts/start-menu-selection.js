@@ -9,6 +9,8 @@ AFRAME.registerComponent("input-listen", {
       const chosenReceptText = document.querySelector("#chosenReceptText");
       const correctFood = document.querySelectorAll(".correct");
       const incorrectFood = document.querySelectorAll(".incorrect");
+      const heightAdjustmentScreen = document.querySelector('#height_adjustment_screen'); 
+      const proximityAdjustmentScreen = document.querySelector('#proximity_adjustment_screen'); 
       console.log("start-menu-shit", correctFood,incorrectFood)
       count = 0;
       
@@ -22,9 +24,17 @@ AFRAME.registerComponent("input-listen", {
           console.log(count)
           if (count === 1){
             informationMenu.setAttribute('visible', false)
+            heightAdjustmentScreen.setAttribute('visible', true)
+          }
+          if (count === 2) {
+            heightAdjustmentScreen.setAttribute('visible', false)
+            proximityAdjustmentScreen.setAttribute('visible', true)
+          }
+          if (count === 3) {
+            proximityAdjustmentScreen.setAttribute('visible', false)
             menu.setAttribute('visible', true)
           }
-          if (count === 2){
+          if (count === 4){
             triggerdownMenu(e.target.id);
           }
             count++;
