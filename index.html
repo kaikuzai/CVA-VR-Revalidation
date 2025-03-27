@@ -190,12 +190,19 @@
           scale="0.5 0.5 0.5"
         ></a-image>
         <a-text
-          value="Druk op de achterste knop dat weergeven is in de foto deze heb je nodig om het spel te beginnen en te navigeren door het menu"
+          value="Gebruik de Triggers! \n Druk op de achterste knop dat weergeven is in de foto deze heb je nodig om het spel te beginnen en te navigeren door het menu"
           position="0.00308 -0.5 -0.7"
           scale="0.3 0.3 0.3"
           text="align: center"
           opacity="1.2"
         ></a-text>
+        <a-box
+          id="box_dark_shade_background"
+          material="color: #9f8989"
+          geometry="depth: 0.1; height: 1.8; width: 2.5"
+          position="0 0 -0.8"
+          visible=""
+        ></a-box>
       </a-entity>
       <!-- END | START MENU-->
       <!-- INFORMATION -->
@@ -244,6 +251,13 @@
           text="align: center"
           opacity="1.2"
         ></a-text>
+        <a-box
+          id="box_dark_shade_background"
+          material="color: #9f8989"
+          geometry="depth: 0.1; height: 2; width: 2.4"
+          position="0 0 -0.8"
+          visible=""
+        ></a-box>
       </a-entity>
       <a-entity
         id="proximity_adjustment_screen"
@@ -278,6 +292,13 @@
           text="align: right; width: 6.1; "
           opacity="1.2"
         ></a-text
+        ><a-box
+          id="box_dark_shade_background"
+          material="color: #9f8989"
+          geometry="depth: 0.1; height: 1.8; width: 2.5"
+          position="0 0 -0.8"
+          visible=""
+        ></a-box
       ></a-entity>
       <a-entity
         id="height_adjustment_screen"
@@ -312,6 +333,13 @@
           text="align: right; width: 6.1; "
           opacity="1.2"
         ></a-text
+        ><a-box
+          id="box_dark_shade_background"
+          material="color: #9f8989"
+          geometry="depth: 0.1; height: 1.8; width: 2.5"
+          position="0 0 -0.8"
+          visible=""
+        ></a-box
       ></a-entity>
 
       <!-- END | INFORMATION-->
@@ -357,7 +385,7 @@
             width="1.5"
             scale="1.05 1.05 1.05 "
             position="0 -0.4 0"
-            value="Druk op linker achterste knop"
+            value="Linker Trigger"
             text="align: center;"
             opacity="1.5"
           ></a-text>
@@ -379,7 +407,7 @@
               width="1.5"
               scale="1.05 1.05 1.05 "
               position="-0.03 -0.4 0"
-              value="Druk op rechter achterste knop"
+              value="Rechter Trigger"
               text="align: center"
               opacity="1.5"
             ></a-text
