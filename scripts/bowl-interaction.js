@@ -49,10 +49,18 @@ AFRAME.registerComponent('collision-listener', {
               
               if(finished_recepi == 'pannenkoek'){
                 pannenkoek.setAttribute('visible', true);
+                const incorrectFood = document.querySelectorAll(".incorrect");
+                incorrectFood.forEach(function (food) {
+                  food.setAttribute('visible', false);
+                  });
               }
 
               if(finished_recepi == 'taart'){
                 taart.setAttribute('visible', true);
+                const incorrectFood = document.querySelectorAll(".incorrect");
+                incorrectFood.forEach(function (food) {
+                  food.setAttribute('visible', false);
+                  });
               }
             }
 
